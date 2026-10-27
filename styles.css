@@ -1,0 +1,46 @@
+* {
+  background-color: var(--Sable);
+}
+:root {
+  --Bordeaux: #4a1726;
+  --Ivoire: #f5efe5;
+  --Or_doux: #b99a65;
+  --Charbon: #252521;
+  --Sable: #e2d6c5;
+}
+nav {
+  background-color: var(--Bordeaux);
+  display: flex;
+  align-items: baseline;
+  justify-items: left;
+  font-size: 1em;
+  gap: 3em;
+  object-position: 1000;
+}
+nav img {
+  background-color: var(--Bordeaux);
+  width: 10vw;
+  border-radius: 50%;
+}
+nav a {
+  background-color: var(--Bordeaux);
+  font-weight: 300;
+}
+nav span {
+  background-color: #4a1726;
+  font-size: 3em;
+  font-weight: 400;
+}
+.bx-menu {
+  background-color: #4a1726;
+}
+nav ul {
+  background-color: #4a1726;
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  display: none;
+}
+nav .carte ul :hover {
+  display: block;
+}
