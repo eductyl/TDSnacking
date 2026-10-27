@@ -1,78 +1,630 @@
-* {
-  background-color: var(--Sable);
-}
+/* ==========================================================
+   Eat & Fit — feuille de style
+   ========================================================== */
+
+
+/* ---------- Couleurs ---------- */
+
 :root {
-  --Bordeaux: #4a1726;
-  --Ivoire: #f5efe5;
-  --Or_doux: #b99a65;
-  --Charbon: #252521;
-  --Sable: #e2d6c5;
+  --burgundy: #4a1726;
+  --gold: #b99a65;
+  --cream: #f5efe5; /* texte clair posé sur fond bordeaux */
+
+  --background: #f5efe5;
+  --card-bg: #fbf7f0;
+  --text: #252521;
+  --heading: #4a1726;
+  --line: #e2d6c5;
+  --section-alt: #e2d6c5;
+  --button-bg: #4a1726;
+  --button-text: #f5efe5;
 }
-nav {
+
+/* Thème sombre : suit le réglage du système, sauf si la page force le thème clair */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: #1e1d1a;
+    --card-bg: #2a2824;
+    --text: #f5efe5;
+    --heading: #d9bf8a;
+    --line: #463f35;
+    --section-alt: #252320;
+    --button-bg: #b99a65;
+    --button-text: #252521;
+  }
+}
+
+/* Même palette quand on force le thème sombre avec data-theme="dark" */
+:root[data-theme="dark"] {
+  --background: #1e1d1a;
+  --card-bg: #2a2824;
+  --text: #f5efe5;
+  --heading: #d9bf8a;
+  --line: #463f35;
+  --section-alt: #252320;
+  --button-bg: #b99a65;
+  --button-text: #252521;
+}
+
+
+/* ---------- Base ---------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  scroll-behavior: smooth;
+  /* on garde de la place pour le header collant quand on saute à une ancre */
+  scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 72px);
+  /* évite que le contenu passe sous l'encoche des téléphones */
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font: 16px/1.65 Lato, system-ui, sans-serif;
+}
+
+/* bandeau bordeaux derrière l'encoche */
+body::before {
+  content: "";
   position: fixed;
-  inset: 0 0 auto 0;
-  z-index: 100;
-  min-height: var(--nav-h);
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  background: var(--burgundy);
+  z-index: 25;
+}
+
+h1,
+h2,
+h3,
+.brand {
+  font-family: "Playfair Display", Georgia, serif;
+  color: var(--heading);
+  line-height: 1.2;
+  margin: 0 0 0.4em;
+}
+
+h2 {
+  font-size: clamp(1.7rem, 4vw, 2.3rem);
+}
+
+h3 {
+  font-size: 1.15rem;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+section {
+  padding: 56px 0;
+}
+
+.section-alt {
+  background: var(--section-alt);
+}
+
+.about-text {
+  max-width: 680px;
+}
+
+mark {
+  background: #b99a6544;
+  color: inherit;
+  padding: 0 0.25em;
+  border-radius: 3px;
+}
+
+/* lien d'évitement pour la navigation au clavier */
+.skip-link {
+  position: absolute;
+  left: -999px;
+}
+
+.skip-link:focus {
+  left: 8px;
+  top: 8px;
+  background: #fff;
+  padding: 8px;
+  z-index: 50;
+}
+
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+
+/* ---------- Boutons et champs de formulaire ---------- */
+
+.btn {
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: 0;
+  border-radius: 6px;
+  padding: 0.6em 1.1em;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn:hover {
+  filter: brightness(1.1);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-outline {
+  background: none;
+  border: 1.5px solid currentColor;
+  color: var(--heading);
+}
+
+select,
+input,
+textarea {
+  font: inherit;
+  width: 100%;
+  padding: 0.55em;
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  background: var(--background);
+  color: var(--text);
+}
+
+label {
+  display: block;
+  margin: 10px 0 2px;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+/* case à cocher + texte sur la même ligne */
+.checkbox-label {
+  display: flex;
+  gap: 8px;
+  font-weight: 400;
+  align-items: flex-start;
+}
+
+.checkbox-label input {
+  width: auto;
+  margin-top: 5px;
+}
+
+
+/* ---------- En-tête et navigation ---------- */
+
+header {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 20;
+  background: var(--burgundy);
+  border-bottom: 2px solid var(--gold);
+}
+
+header .container {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-  padding: 0.5rem clamp(1rem, 3vw, 2.5rem);
-  background: var(--Bordeaux);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  gap: 8px;
+  min-height: 60px;
+}
+
+header .btn {
+  background: var(--gold);
+  color: #252521;
+}
+
+.brand {
+  color: var(--cream);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  margin: 0 auto 0 0;
+}
+
+nav {
+  display: flex;
+}
+
+nav a {
+  color: var(--cream);
+  text-decoration: none;
+  padding: 0.5em 0.7em;
+}
+
+nav a:hover {
+  color: var(--gold);
+}
+
+/* le bouton burger n'apparaît que sur mobile (voir plus bas) */
+#menu-toggle {
+  display: none;
+}
+
+
+/* ---------- Accueil ---------- */
+
+.hero {
+  background:
+    linear-gradient(rgba(74, 23, 38, 0.93), rgba(74, 23, 38, 0.97)),
+    repeating-linear-gradient(45deg, #b99a65 0 1px, transparent 1px 22px);
+  color: var(--cream);
+  padding: 90px 0;
+  text-align: center;
+  border-bottom: 4px double var(--gold);
+}
+
+.hero h1 {
+  color: var(--cream);
+  font-size: clamp(2.6rem, 9vw, 5rem);
+  margin: 0.1em 0;
+}
+
+.hero p {
+  max-width: 620px;
+  margin: 0 auto 1.2em;
+}
+
+.hero .btn {
+  margin: 6px;
+}
+
+.hero .btn-outline {
+  color: var(--cream);
+}
+
+.hero-tag {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  color: var(--gold);
+  font-size: 1.35rem;
+}
+
+
+/* ---------- Grilles et cartes (plats, formules) ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 20px;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--gold);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 8px rgba(37, 37, 33, 0.08);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card-icon {
+  height: 84px;
+  display: grid;
+  place-items: center;
+  font-size: 2.4rem;
+  background: var(--section-alt);
   border-bottom: 1px solid var(--line);
 }
-nav span {
-  color: var(--Or_doux);
+
+.card-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 6px;
 }
-nav i {
-  color: var(--Or_doux);
+
+.card-body p {
+  margin: 0;
 }
-.logo {
-  background-color: var(--Bordeaux);
+
+.card-note {
+  font-size: 0.85rem;
+  color: var(--heading);
+  font-weight: 700;
 }
-.logo img {
-  height: 52px;
+
+details {
+  font-size: 0.9rem;
+}
+
+summary {
+  cursor: pointer;
+  color: var(--heading);
+  font-weight: 700;
+}
+
+/* bas de carte : prix (ou menu déroulant) + bouton, collé en bas */
+.card-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+}
+
+.card-footer b {
+  font-size: 1.15rem;
+  color: var(--heading);
+}
+
+.card-footer .btn {
+  margin-left: auto;
+}
+
+.card-footer select {
+  flex: 1;
   width: auto;
-  border-radius: 100%;
-  background-color: #4a1726;
-  border-color: #4a1726;
+  min-width: 0;
 }
-nav a {
-  background-color: var(--Bordeaux);
-  font-weight: 300;
+
+
+/* ---------- Onglets de la carte et encadrés d'information ---------- */
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
 }
-nav span {
-  background-color: #4a1726;
-  font-size: 3em;
-  font-weight: 400;
+
+.tabs .btn[aria-pressed="true"] {
+  background: var(--button-bg);
+  color: var(--button-text);
 }
-.bx-menu {
-  background-color: #4a1726;
+
+.tabs .btn[aria-pressed="false"] {
+  background: none;
+  color: var(--heading);
+  border: 1.5px solid var(--gold);
 }
-.has-sub {
-  position: relative;
+
+.notice {
+  border-left: 4px solid var(--gold);
+  background: var(--card-bg);
+  padding: 10px 14px;
+  margin: 0 0 20px;
+  font-size: 0.95rem;
 }
-.has-sub > div {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 18rem;
-  padding: 0.4rem;
-  background: var(--Bordeaux);
-  border: 1px solid var(--line);
-  border-radius: 0.9rem;
-  box-shadow: 0 18px 32px -14px rgb(11 25 48 / 0.35);
+
+
+/* ---------- Horaires et liste des allergènes ---------- */
+
+.hours-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
-.has-sub:hover > div,
-.has-sub:focus-within > div {
+
+.hours-list li {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dotted var(--gold);
+  padding: 4px 0;
+  gap: 12px;
+}
+
+.allergen-list {
+  columns: 2 240px;
+  padding-left: 1.2em;
+}
+
+
+/* ---------- Panier ---------- */
+
+#cart {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(430px, 100%);
+  background: var(--background);
+  z-index: 40;
+  padding: calc(env(safe-area-inset-top, 0px) + 16px) 18px 24px;
+  overflow: auto;
+  box-shadow: -6px 0 24px rgba(0, 0, 0, 0.3);
+  border-left: 3px solid var(--gold);
+  /* fermé par défaut : poussé hors de l'écran */
+  transform: translateX(100%);
+  transition: transform 0.25s;
+}
+
+#cart.open {
+  transform: none;
+}
+
+#cart:not(.open) {
+  visibility: hidden;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+/* une ligne du panier : nom | quantité | prix */
+.cart-lines {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cart-lines li {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.cart-lines small {
   display: block;
+  opacity: 0.8;
 }
-.has-sub > div a {
-  border-radius: 0.55rem;
-  white-space: normal;
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
-.has-sub > div a:hover {
-  background: var(--porcelain);
+
+.quantity-controls .btn {
+  padding: 0.2em 0.6em;
+}
+
+/* choix À emporter / Livraison */
+.mode-switch {
+  display: flex;
+  gap: 6px;
+  margin: 14px 0;
+}
+
+.mode-switch .btn {
+  flex: 1;
+}
+
+.mode-switch [aria-pressed="false"] {
+  background: none;
+  color: var(--heading);
+  border: 1.5px solid var(--gold);
+}
+
+.totals {
+  margin: 12px 0;
+}
+
+.totals div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.totals dt,
+.totals dd {
+  margin: 0;
+}
+
+.grand-total {
+  font-weight: 700;
+  font-size: 1.2rem;
+  border-top: 2px solid var(--gold);
+  margin-top: 6px;
+  padding-top: 6px;
+}
+
+
+/* ---------- Messages, pied de page ---------- */
+
+.message-error {
+  background: #7a1f1f;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin: 10px 0;
+  list-style: none;
+}
+
+.message-success {
+  background: #2f5a3a;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+
+/* petit toast en bas de l'écran ("Cassoulet ajouté au panier") */
+#announcer {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+  transform: translateX(-50%);
+  background: var(--burgundy);
+  color: var(--cream);
+  padding: 10px 18px;
+  border-radius: 30px;
+  z-index: 60;
+  border: 1px solid var(--gold);
+}
+
+#announcer:empty {
+  display: none;
+}
+
+footer {
+  background: #252521;
+  color: #e2d6c5;
+  padding: 36px 0;
+}
+
+footer a {
+  color: var(--gold);
+}
+
+footer ul {
+  list-style: none;
+  padding: 0;
+}
+
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 760px) {
+  #menu-toggle {
+    display: block;
+  }
+
+  /* le menu devient un panneau déroulant sous le header */
+  nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--burgundy);
+    padding: 8px 20px;
+  }
+
+  nav.open {
+    display: block;
+  }
+
+  nav a {
+    display: block;
+  }
+}
+
+/* respect des préférences d'accessibilité : pas d'animations si demandé */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }
