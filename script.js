@@ -3,7 +3,6 @@
 //  Carte, formules, panier et formulaires
 // ==========================================================
 
-
 // ---------- Réglages du restaurant (à modifier ici) ----------
 
 const SETTINGS = {
@@ -17,11 +16,26 @@ const SETTINGS = {
   // Heures décimales (14.5 = 14h30). Un jour absent = fermé.
   openingHours: {
     0: [[12, 15]],
-    2: [[12, 14.5], [19, 22]],
-    3: [[12, 14.5], [19, 22]],
-    4: [[12, 14.5], [19, 22]],
-    5: [[12, 14.5], [19, 23]],
-    6: [[12, 14.5], [19, 23]],
+    2: [
+      [12, 14.5],
+      [19, 22],
+    ],
+    3: [
+      [12, 14.5],
+      [19, 22],
+    ],
+    4: [
+      [12, 14.5],
+      [19, 22],
+    ],
+    5: [
+      [12, 14.5],
+      [19, 23],
+    ],
+    6: [
+      [12, 14.5],
+      [19, 23],
+    ],
   },
 
   deliveryZone: "[Communes ou codes postaux desservis]",
@@ -31,7 +45,6 @@ const SETTINGS = {
 };
 
 const allergensProvisional = !SETTINGS.allergensVerified;
-
 
 // ---------- Données ----------
 
@@ -68,7 +81,8 @@ const MENU_ITEMS = [
     category: "starter",
     name: "Salade de gésiers",
     formats: [{ label: "", price: 9.5 }],
-    description: "Gésiers confits tièdes, salade verte, croûtons à l’ail et vinaigrette à la moutarde.",
+    description:
+      "Gésiers confits tièdes, salade verte, croûtons à l’ail et vinaigrette à la moutarde.",
     allergens: [1, 10, 12],
   },
   {
@@ -76,15 +90,20 @@ const MENU_ITEMS = [
     category: "starter",
     name: "Salade de museau",
     formats: [{ label: "", price: 9 }],
-    description: "Museau de bœuf en vinaigrette, cornichons, oignons nouveaux et persil plat.",
+    description:
+      "Museau de bœuf en vinaigrette, cornichons, oignons nouveaux et persil plat.",
     allergens: [9, 10, 12],
   },
   {
     id: "huitres",
     category: "starter",
     name: "Huîtres n° 5",
-    formats: [{ label: "6 pièces", price: 13.5 }, { label: "12 pièces", price: 25 }],
-    description: "Huîtres creuses de calibre 5, vinaigre d’échalote et pain de seigle beurré.",
+    formats: [
+      { label: "6 pièces", price: 13.5 },
+      { label: "12 pièces", price: 25 },
+    ],
+    description:
+      "Huîtres creuses de calibre 5, vinaigre d’échalote et pain de seigle beurré.",
     allergens: [1, 7, 12, 14],
     surcharge: 4,
     seasonal: true,
@@ -94,7 +113,8 @@ const MENU_ITEMS = [
     category: "starter",
     name: "Plateau de charcuteries et fromages",
     formats: [{ label: "", price: 16.5 }],
-    description: "Jambon sec, rosette, pâté de campagne et trois fromages affinés, cornichons.",
+    description:
+      "Jambon sec, rosette, pâté de campagne et trois fromages affinés, cornichons.",
     allergens: [1, 7, 12],
     surcharge: 3,
   },
@@ -103,25 +123,39 @@ const MENU_ITEMS = [
     category: "starter",
     name: "Tarte au maroilles",
     formats: [{ label: "", price: 9.5 }],
-    description: "Tarte fine au maroilles, crème et oignons, servie tiède avec une petite salade.",
+    description:
+      "Tarte fine au maroilles, crème et oignons, servie tiède avec une petite salade.",
     allergens: [1, 3, 7],
   },
   {
     id: "escargots",
     category: "starter",
     name: "Escargots",
-    formats: [{ label: "6 pièces", price: 10.5 }, { label: "12 pièces", price: 18 }],
+    formats: [
+      { label: "6 pièces", price: 10.5 },
+      { label: "12 pièces", price: 18 },
+    ],
     description: "Escargots de Bourgogne au beurre persillé, ail et échalote.",
     allergens: [7, 14],
   },
 
   // ----- Plats -----
   {
+    id: "flammenkuche",
+    category: "main",
+    name: "Flammenküche",
+    formats: [{ label: "", price: 19.5 }],
+    description:
+      "farine, huile, crème, fromage blanc, oignons, lardons, muscade.",
+    allergens: [1, 4, 6, 7, 12],
+  },
+  {
     id: "cassoulet",
     category: "main",
     name: "Cassoulet",
     formats: [{ label: "", price: 19.5 }],
-    description: "Haricots blancs mijotés, confit de canard, saucisse de Toulouse et lard, gratinés au four.",
+    description:
+      "Haricots blancs mijotés, confit de canard, saucisse de Toulouse et lard, gratinés au four.",
     allergens: [1, 9, 12],
   },
   {
@@ -129,7 +163,8 @@ const MENU_ITEMS = [
     category: "main",
     name: "Raclette",
     formats: [{ label: "par personne", price: 24 }],
-    description: "Fromage à raclette fondu à table, charcuteries, pommes de terre et cornichons.",
+    description:
+      "Fromage à raclette fondu à table, charcuteries, pommes de terre et cornichons.",
     allergens: [7, 12],
     minPeople: 2,
     advanceOrder: true,
@@ -139,7 +174,8 @@ const MENU_ITEMS = [
     category: "main",
     name: "Fondue savoyarde",
     formats: [{ label: "par personne", price: 23 }],
-    description: "Mélange de fromages de Savoie, vin blanc et cubes de pain de campagne.",
+    description:
+      "Mélange de fromages de Savoie, vin blanc et cubes de pain de campagne.",
     allergens: [1, 7, 12],
     minPeople: 2,
     advanceOrder: true,
@@ -149,7 +185,8 @@ const MENU_ITEMS = [
     category: "main",
     name: "Fondue bourguignonne",
     formats: [{ label: "par personne", price: 26 }],
-    description: "Bœuf tendre à plonger dans l’huile, trois sauces maison et pommes grenaille.",
+    description:
+      "Bœuf tendre à plonger dans l’huile, trois sauces maison et pommes grenaille.",
     allergens: [3, 10, 12],
     minPeople: 2,
     advanceOrder: true,
@@ -159,7 +196,8 @@ const MENU_ITEMS = [
     category: "main",
     name: "Bœuf bourguignon",
     formats: [{ label: "", price: 19 }],
-    description: "Bœuf mijoté au vin rouge, lardons, champignons et pommes vapeur.",
+    description:
+      "Bœuf mijoté au vin rouge, lardons, champignons et pommes vapeur.",
     allergens: [1, 9, 12],
   },
   {
@@ -167,7 +205,8 @@ const MENU_ITEMS = [
     category: "main",
     name: "Choucroute",
     formats: [{ label: "", price: 21 }],
-    description: "Choucroute garnie : saucisse, lard fumé, palette et pommes de terre.",
+    description:
+      "Choucroute garnie : saucisse, lard fumé, palette et pommes de terre.",
     allergens: [9, 10, 12],
   },
   {
@@ -175,7 +214,8 @@ const MENU_ITEMS = [
     category: "main",
     name: "Aligot",
     formats: [{ label: "", price: 17.5 }],
-    description: "Aligot onctueux à la tomme fraîche, saucisse de Toulouse grillée.",
+    description:
+      "Aligot onctueux à la tomme fraîche, saucisse de Toulouse grillée.",
     allergens: [7],
   },
   {
@@ -183,7 +223,8 @@ const MENU_ITEMS = [
     category: "main",
     name: "Rognons",
     formats: [{ label: "", price: 18.5 }],
-    description: "Rognons de veau sautés, sauce moutarde à l’ancienne, gratin dauphinois.",
+    description:
+      "Rognons de veau sautés, sauce moutarde à l’ancienne, gratin dauphinois.",
     allergens: [1, 7, 10],
   },
   {
@@ -191,7 +232,8 @@ const MENU_ITEMS = [
     category: "main",
     name: "Tripes à la mode de Caen",
     formats: [{ label: "", price: 17.5 }],
-    description: "Tripes mijotées au cidre et au calvados, carottes, oignons et pommes vapeur.",
+    description:
+      "Tripes mijotées au cidre et au calvados, carottes, oignons et pommes vapeur.",
     allergens: [9, 12],
   },
   {
@@ -208,7 +250,8 @@ const MENU_ITEMS = [
     category: "main",
     name: "Daube de sanglier",
     formats: [{ label: "", price: 21.5 }],
-    description: "Sanglier mijoté au vin rouge et aux baies de genièvre, pommes de terre.",
+    description:
+      "Sanglier mijoté au vin rouge et aux baies de genièvre, pommes de terre.",
     allergens: [9, 12],
     surcharge: 2,
     seasonal: true,
@@ -253,7 +296,8 @@ const MENU_ITEMS = [
     category: "dessert",
     name: "Banana split",
     formats: [{ label: "", price: 8.5 }],
-    description: "Banane, glaces vanille, chocolat et fraise, chantilly et sauce chocolat.",
+    description:
+      "Banane, glaces vanille, chocolat et fraise, chantilly et sauce chocolat.",
     allergens: [3, 7, 8],
   },
   {
@@ -286,7 +330,8 @@ const MENU_ITEMS = [
     category: "dessert",
     name: "Paris-Brest",
     formats: [{ label: "", price: 8.5 }],
-    description: "Pâte à choux, crème mousseline pralinée et éclats de noisettes.",
+    description:
+      "Pâte à choux, crème mousseline pralinée et éclats de noisettes.",
     allergens: [1, 3, 7, 8],
   },
 
@@ -295,7 +340,10 @@ const MENU_ITEMS = [
     id: "biere",
     category: "drink",
     name: "Bière",
-    formats: [{ label: "25 cl", price: 4.5 }, { label: "50 cl", price: 7.5 }],
+    formats: [
+      { label: "25 cl", price: 4.5 },
+      { label: "50 cl", price: 7.5 },
+    ],
     description: "Bière à la pression, sélection du moment.",
     allergens: [1],
     alcohol: true,
@@ -314,7 +362,8 @@ const MENU_ITEMS = [
     category: "drink",
     name: "Chartreuse",
     formats: [{ label: "4 cl", price: 7 }],
-    description: "Liqueur de plantes des Alpes, à déguster fraîche ou à température ambiante.",
+    description:
+      "Liqueur de plantes des Alpes, à déguster fraîche ou à température ambiante.",
     allergens: [],
     alcohol: true,
   },
@@ -322,8 +371,12 @@ const MENU_ITEMS = [
     id: "vins",
     category: "drink",
     name: "Vins",
-    formats: [{ label: "Verre 12 cl", price: 5.5 }, { label: "Bouteille 75 cl", price: 26 }],
-    description: "Sélection de vins de nos régions, rouge, blanc ou rosé. Carte sur demande.",
+    formats: [
+      { label: "Verre 12 cl", price: 5.5 },
+      { label: "Bouteille 75 cl", price: 26 },
+    ],
+    description:
+      "Sélection de vins de nos régions, rouge, blanc ou rosé. Carte sur demande.",
     allergens: [12],
     alcohol: true,
   },
@@ -341,7 +394,8 @@ const MENU_ITEMS = [
     category: "drink",
     name: "Jacqueline",
     formats: [{ label: "4 cl", price: 6.5 }],
-    description: "Une spécialité de la maison à découvrir. [Description à préciser par le restaurant]",
+    description:
+      "Une spécialité de la maison à découvrir. [Description à préciser par le restaurant]",
     allergens: [],
     alcohol: true,
   },
@@ -445,9 +499,22 @@ const MENU_TABS = [
 ];
 
 // Plats mis en avant sur l'accueil
-const POPULAR_ITEM_IDS = ["cassoulet", "bourguignon", "escargots", "profiteroles"];
+const POPULAR_ITEM_IDS = [
+  "cassoulet",
+  "bourguignon",
+  "escargots",
+  "profiteroles",
+];
 
-const DAY_NAMES = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+const DAY_NAMES = [
+  "Dimanche",
+  "Lundi",
+  "Mardi",
+  "Mercredi",
+  "Jeudi",
+  "Vendredi",
+  "Samedi",
+];
 const WEEK_DISPLAY_ORDER = [1, 2, 3, 4, 5, 6, 0]; // on affiche du lundi au dimanche
 
 const STEP_TITLES = {
@@ -456,7 +523,6 @@ const STEP_TITLES = {
   review: "Vérification",
   done: "Demande préparée",
 };
-
 
 // ---------- État de la page ----------
 
@@ -469,7 +535,6 @@ const state = {
   activeTab: "starters",
   orderRef: "",
 };
-
 
 // ---------- Petits outils ----------
 
@@ -524,23 +589,29 @@ function announce(message) {
   }, 2200);
 }
 
-
 // ---------- Affichage de la carte ----------
 
 function renderMenuCard(item) {
   const notes = [];
   if (item.minPeople) {
-    notes.push(`Sur commande 24 h à l’avance · dès ${item.minPeople} personnes`);
+    notes.push(
+      `Sur commande 24 h à l’avance · dès ${item.minPeople} personnes`,
+    );
   }
   if (item.seasonal) notes.push("Selon arrivage");
   if (item.alcohol) notes.push("Contient de l’alcool · réservé aux majeurs");
-  const notesHtml = notes.map((text) => `<p class="card-note">${text}</p>`).join("");
+  const notesHtml = notes
+    .map((text) => `<p class="card-note">${text}</p>`)
+    .join("");
 
   // Un seul format : on affiche juste le prix. Sinon, un menu déroulant.
   let priceHtml;
   if (item.formats.length > 1) {
     const options = item.formats
-      .map((format, index) => `<option value="${index}">${format.label} — ${formatPrice(format.price)}</option>`)
+      .map(
+        (format, index) =>
+          `<option value="${index}">${format.label} — ${formatPrice(format.price)}</option>`,
+      )
       .join("");
     priceHtml = `<select aria-label="Format de ${item.name}">${options}</select>`;
   } else {
@@ -569,14 +640,16 @@ function renderMenuCard(item) {
 
 function renderMenu() {
   $("#menu-tabs").innerHTML = MENU_TABS.map(
-    (tab) => `<button class="btn" data-action="switch-tab" data-tab="${tab.id}" aria-pressed="${state.activeTab === tab.id}">${tab.label}</button>`
+    (tab) =>
+      `<button class="btn" data-action="switch-tab" data-tab="${tab.id}" aria-pressed="${state.activeTab === tab.id}">${tab.label}</button>`,
   ).join("");
 
   const activeTab = MENU_TABS.find((tab) => tab.id === state.activeTab);
-  const items = MENU_ITEMS.filter((item) => activeTab.categories.includes(item.category));
+  const items = MENU_ITEMS.filter((item) =>
+    activeTab.categories.includes(item.category),
+  );
   $("#menu-items").innerHTML = items.map(renderMenuCard).join("");
 }
-
 
 // ---------- Formules ----------
 
@@ -585,10 +658,14 @@ function renderFormules() {
     // un menu déroulant par choix (entrée, plat...), sans les plats à partager
     const selects = formule.courses
       .map((category) => {
-        const choices = MENU_ITEMS.filter((item) => item.category === category && !item.minPeople);
+        const choices = MENU_ITEMS.filter(
+          (item) => item.category === category && !item.minPeople,
+        );
         const options = choices
           .map((item) => {
-            const surcharge = item.surcharge ? ` (+${formatPrice(item.surcharge)})` : "";
+            const surcharge = item.surcharge
+              ? ` (+${formatPrice(item.surcharge)})`
+              : "";
             return `<option value="${item.id}">${item.name}${surcharge}</option>`;
           })
           .join("");
@@ -625,7 +702,10 @@ function computeFormule(card) {
     const item = MENU_ITEMS.find((menuItem) => menuItem.id === select.value);
     price += item.surcharge || 0;
     separatePrice += item.formats[0].price;
-    names.push(item.name + (item.formats.length > 1 ? ` (${item.formats[0].label})` : ""));
+    names.push(
+      item.name +
+        (item.formats.length > 1 ? ` (${item.formats[0].label})` : ""),
+    );
     if (item.alcohol) containsAlcohol = true;
   });
 
@@ -634,10 +714,12 @@ function computeFormule(card) {
 
 function updateFormulePrice(card) {
   const { price, separatePrice } = computeFormule(card);
-  const savings = separatePrice > price ? ` <small>au lieu de ${formatPrice(separatePrice)}</small>` : "";
+  const savings =
+    separatePrice > price
+      ? ` <small>au lieu de ${formatPrice(separatePrice)}</small>`
+      : "";
   card.querySelector(".formule-price").innerHTML = formatPrice(price) + savings;
 }
-
 
 // ---------- Créneaux de retrait / livraison ----------
 
@@ -646,7 +728,9 @@ function updateFormulePrice(card) {
 function getTimeSlots(mode, needsAdvanceNotice) {
   const slots = [];
   const now = Date.now();
-  const leadMinutes = needsAdvanceNotice ? SETTINGS.advanceNoticeHours * 60 : SETTINGS.prepMinutes[mode];
+  const leadMinutes = needsAdvanceNotice
+    ? SETTINGS.advanceNoticeHours * 60
+    : SETTINGS.prepMinutes[mode];
   const leadTime = leadMinutes * 60 * 1000;
   const daysToLookAhead = needsAdvanceNotice ? 5 : 3;
 
@@ -667,7 +751,6 @@ function getTimeSlots(mode, needsAdvanceNotice) {
   return slots.slice(0, 48);
 }
 
-
 // ---------- Panier : affichage ----------
 
 function renderTotals({ subtotal, deliveryFee, total, isDelivery }) {
@@ -684,7 +767,8 @@ function renderTotals({ subtotal, deliveryFee, total, isDelivery }) {
 }
 
 function renderCartLines() {
-  const rows = state.cartLines.map((line) => `
+  const rows = state.cartLines.map(
+    (line) => `
     <li>
       <div><b>${line.name}</b><small>${line.detail}</small></div>
       <div class="quantity-controls">
@@ -693,7 +777,8 @@ function renderCartLines() {
         <button class="btn btn-outline" data-action="change-quantity" data-key="${line.key}" data-delta="1" aria-label="Ajouter une unité de ${line.name}">+</button>
       </div>
       <b>${formatPrice(line.price * line.quantity)}</b>
-    </li>`);
+    </li>`,
+  );
 
   return `<ul class="cart-lines">${rows.join("")}</ul>`;
 }
@@ -706,7 +791,8 @@ function renderEmptyCart() {
 
 // Étape 1 : le contenu du panier et le choix À emporter / Livraison
 function renderCartStep(summary) {
-  const { isDelivery, needsAdvanceNotice, belowDeliveryMinimum, subtotal } = summary;
+  const { isDelivery, needsAdvanceNotice, belowDeliveryMinimum, subtotal } =
+    summary;
 
   const modeSwitch = `
     <div class="mode-switch" role="group" aria-label="Mode de retrait">
@@ -800,12 +886,14 @@ function renderReviewStep(summary) {
   const { isDelivery } = summary;
   const form = state.form;
 
-  const rows = state.cartLines.map((line) => `
+  const rows = state.cartLines.map(
+    (line) => `
     <li>
       <div><b>${line.quantity} × ${line.name}</b><small>${line.detail}</small></div>
       <span></span>
       <b>${formatPrice(line.price * line.quantity)}</b>
-    </li>`);
+    </li>`,
+  );
 
   const address = isDelivery ? `<br>${escapeHtml(form.address)}` : "";
   const note = form.note ? `<br><i>${escapeHtml(form.note)}</i>` : "";
@@ -832,13 +920,17 @@ function renderDoneStep() {
 // Redessine tout le panier selon l'étape en cours
 function renderCart() {
   const lines = state.cartLines;
-  const subtotal = lines.reduce((sum, line) => sum + line.price * line.quantity, 0);
+  const subtotal = lines.reduce(
+    (sum, line) => sum + line.price * line.quantity,
+    0,
+  );
   const isDelivery = state.mode === "delivery";
 
   // Livraison offerte au-dessus d'un certain montant, et rien à payer si le panier est vide
   let deliveryFee = 0;
   if (isDelivery && subtotal) {
-    deliveryFee = subtotal >= SETTINGS.freeDeliveryFrom ? 0 : SETTINGS.deliveryFee;
+    deliveryFee =
+      subtotal >= SETTINGS.freeDeliveryFrom ? 0 : SETTINGS.deliveryFee;
   }
 
   const summary = {
@@ -851,7 +943,10 @@ function renderCart() {
     belowDeliveryMinimum: isDelivery && subtotal < SETTINGS.deliveryMinimum,
   };
 
-  $("#cart-count").textContent = lines.reduce((sum, line) => sum + line.quantity, 0);
+  $("#cart-count").textContent = lines.reduce(
+    (sum, line) => sum + line.quantity,
+    0,
+  );
 
   if (!lines.length && state.step !== "done") state.step = "cart";
 
@@ -880,7 +975,6 @@ function setCartOpen(isOpen) {
   }
 }
 
-
 // ---------- Validation des formulaires ----------
 
 // Renvoie la liste des problèmes du formulaire de commande (vide = tout est bon)
@@ -894,7 +988,9 @@ function validateOrderForm() {
 
   const frenchPhone = /^(?:(?:\+|00)33|0)\s?[1-9](?:[\s.-]?\d{2}){4}$/;
   if (!frenchPhone.test((form.phone || "").trim())) {
-    errors.push("Le numéro de téléphone n’est pas valide (ex. 06 12 34 56 78).");
+    errors.push(
+      "Le numéro de téléphone n’est pas valide (ex. 06 12 34 56 78).",
+    );
   }
 
   if (state.mode === "delivery" && (form.address || "").trim().length < 8) {
@@ -930,13 +1026,14 @@ function handleContactFormSubmit() {
 
   if (name.length < 2 || !emailLooksValid || message.length < 10) {
     status.className = "message-error";
-    status.textContent = "Vérifiez votre nom, une adresse e-mail valide et un message d’au moins 10 caractères.";
+    status.textContent =
+      "Vérifiez votre nom, une adresse e-mail valide et un message d’au moins 10 caractères.";
   } else {
     status.className = "message-success";
-    status.textContent = "Mode démonstration : votre message n’a pas été envoyé, aucun service d’e-mail n’est connecté. Contactez-nous par téléphone.";
+    status.textContent =
+      "Mode démonstration : votre message n’a pas été envoyé, aucun service d’e-mail n’est connecté. Contactez-nous par téléphone.";
   }
 }
-
 
 // ---------- Actions déclenchées par les boutons (attribut data-action) ----------
 
@@ -992,7 +1089,9 @@ const actions = {
   },
 
   "change-quantity"(button) {
-    const line = state.cartLines.find((cartLine) => cartLine.key === button.dataset.key);
+    const line = state.cartLines.find(
+      (cartLine) => cartLine.key === button.dataset.key,
+    );
     line.quantity += Number(button.dataset.delta);
 
     // sous le minimum (1, ou 2 pour raclette et fondues), la ligne disparaît
@@ -1044,7 +1143,8 @@ const actions = {
   },
 
   "confirm-order"() {
-    state.orderRef = "DEMO-" + Math.random().toString(36).slice(2, 7).toUpperCase();
+    state.orderRef =
+      "DEMO-" + Math.random().toString(36).slice(2, 7).toUpperCase();
     state.step = "done";
     renderCart();
   },
@@ -1057,7 +1157,6 @@ const actions = {
     setCartOpen(false);
   },
 };
-
 
 // ---------- Écouteurs d'événements ----------
 
@@ -1081,7 +1180,8 @@ document.addEventListener("click", (event) => {
 document.addEventListener("input", (event) => {
   const field = event.target;
   if (field.closest("#cart") && field.name) {
-    state.form[field.name] = field.type === "checkbox" ? field.checked : field.value;
+    state.form[field.name] =
+      field.type === "checkbox" ? field.checked : field.value;
   }
 });
 
@@ -1109,26 +1209,27 @@ $("#menu-toggle").addEventListener("click", (event) => {
   event.currentTarget.setAttribute("aria-expanded", isOpen);
 });
 
-
 // ---------- Initialisation de la page ----------
 
-$("#popular-items").innerHTML = POPULAR_ITEM_IDS
-  .map((id) => renderMenuCard(MENU_ITEMS.find((item) => item.id === id)))
-  .join("");
+$("#popular-items").innerHTML = POPULAR_ITEM_IDS.map((id) =>
+  renderMenuCard(MENU_ITEMS.find((item) => item.id === id)),
+).join("");
 
 // Bandeau "allergènes provisoires" masqué une fois les données validées
 if (!allergensProvisional) $("#provisional-notice").hidden = true;
 
-$("#allergen-legend").innerHTML = ALLERGENS.map((name) => `<li>${name}</li>`).join("");
+$("#allergen-legend").innerHTML = ALLERGENS.map(
+  (name) => `<li>${name}</li>`,
+).join("");
 
-$("#hours-list").innerHTML = WEEK_DISPLAY_ORDER
-  .map((day) => {
-    const ranges = (SETTINGS.openingHours[day] || [])
-      .map(([opening, closing]) => `${formatHour(opening)}–${formatHour(closing)}`)
-      .join(" · ");
-    return `<li><span>${DAY_NAMES[day]}</span><span>${ranges || "Fermé"}</span></li>`;
-  })
-  .join("");
+$("#hours-list").innerHTML = WEEK_DISPLAY_ORDER.map((day) => {
+  const ranges = (SETTINGS.openingHours[day] || [])
+    .map(
+      ([opening, closing]) => `${formatHour(opening)}–${formatHour(closing)}`,
+    )
+    .join(" · ");
+  return `<li><span>${DAY_NAMES[day]}</span><span>${ranges || "Fermé"}</span></li>`;
+}).join("");
 
 $("#delivery-zone").textContent = SETTINGS.deliveryZone;
 
@@ -1146,7 +1247,8 @@ $("#service-columns").innerHTML = `
     <p>Raclette et fondues : à partir de 2 personnes, à commander 24 h à l’avance.</p>
   </div>`;
 
-$("#delivery-terms").innerHTML = `Retrait : prêt en ${SETTINGS.prepMinutes.pickup} min environ. Livraison : ${SETTINGS.prepMinutes.delivery} min environ, frais de ${formatPrice(SETTINGS.deliveryFee)}, minimum ${formatPrice(SETTINGS.deliveryMinimum)}, zone ${SETTINGS.deliveryZone}. Réclamations et litiges : <mark>[À compléter]</mark>.`;
+$("#delivery-terms").innerHTML =
+  `Retrait : prêt en ${SETTINGS.prepMinutes.pickup} min environ. Livraison : ${SETTINGS.prepMinutes.delivery} min environ, frais de ${formatPrice(SETTINGS.deliveryFee)}, minimum ${formatPrice(SETTINGS.deliveryMinimum)}, zone ${SETTINGS.deliveryZone}. Réclamations et litiges : <mark>[À compléter]</mark>.`;
 
 renderMenu();
 renderFormules();

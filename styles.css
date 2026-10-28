@@ -2,7 +2,6 @@
    Eat & Fit — feuille de style
    ========================================================== */
 
-
 /* ---------- Couleurs ---------- */
 
 :root {
@@ -46,7 +45,6 @@
   --button-text: #252521;
 }
 
-
 /* ---------- Base ---------- */
 
 * {
@@ -67,7 +65,10 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--text);
-  font: 16px/1.65 Lato, system-ui, sans-serif;
+  font:
+    16px/1.65 Lato,
+    system-ui,
+    sans-serif;
 }
 
 /* bandeau bordeaux derrière l'encoche */
@@ -142,7 +143,6 @@ mark {
   outline-offset: 2px;
 }
 
-
 /* ---------- Boutons et champs de formulaire ---------- */
 
 .btn {
@@ -203,7 +203,6 @@ label {
   margin-top: 5px;
 }
 
-
 /* ---------- En-tête et navigation ---------- */
 
 header {
@@ -253,7 +252,6 @@ nav a:hover {
   display: none;
 }
 
-
 /* ---------- Accueil ---------- */
 
 .hero {
@@ -291,7 +289,6 @@ nav a:hover {
   color: var(--gold);
   font-size: 1.35rem;
 }
-
 
 /* ---------- Grilles et cartes (plats, formules) ---------- */
 
@@ -385,7 +382,6 @@ summary {
   min-width: 0;
 }
 
-
 /* ---------- Onglets de la carte et encadrés d'information ---------- */
 
 .tabs {
@@ -414,7 +410,6 @@ summary {
   font-size: 0.95rem;
 }
 
-
 /* ---------- Horaires et liste des allergènes ---------- */
 
 .hours-list {
@@ -435,7 +430,6 @@ summary {
   columns: 2 240px;
   padding-left: 1.2em;
 }
-
 
 /* ---------- Panier ---------- */
 
@@ -541,7 +535,6 @@ summary {
   padding-top: 6px;
 }
 
-
 /* ---------- Messages, pied de page ---------- */
 
 .message-error {
@@ -592,7 +585,6 @@ footer ul {
   list-style: none;
   padding: 0;
 }
-
 
 /* ---------- Mobile ---------- */
 

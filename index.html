@@ -1,272 +1,329 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Eat &amp; Fit — Bistro français, à emporter et en livraison</title>
-  <meta name="description" content="Eat &amp; Fit, bistro français : cassoulet, bœuf bourguignon, fondues et raclette. Découvrez la carte, nos formules et commandez à emporter ou en livraison.">
-  <meta property="og:title" content="Eat &amp; Fit — Bistro français">
-  <meta property="og:description" content="Cuisine française généreuse : consultez la carte et commandez en ligne.">
-  <meta property="og:type" content="restaurant">
-  <meta name="theme-color" content="#4a1726">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@500;700&display=swap">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <a class="skip-link" href="#carte">Aller à la carte</a>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Eat &amp; Fit — Bistro français, à emporter et en livraison</title>
+    <meta
+      name="description"
+      content="Eat &amp; Fit, bistro français : cassoulet, bœuf bourguignon, fondues et raclette. Découvrez la carte, nos formules et commandez à emporter ou en livraison."
+    />
+    <meta property="og:title" content="Eat &amp; Fit — Bistro français" />
+    <meta
+      property="og:description"
+      content="Cuisine française généreuse : consultez la carte et commandez en ligne."
+    />
+    <meta property="og:type" content="restaurant" />
+    <meta name="theme-color" content="#4a1726" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@500;700&display=swap"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-  <header>
-    <div class="container">
-      <a class="brand" href="#accueil" data-scroll-to="accueil">Eat &amp; Fit</a>
+  <!---------------------------- Body ---------------------------->
 
-      <nav id="main-nav" aria-label="Navigation principale">
-        <a href="#carte" data-scroll-to="carte">La carte</a>
-        <a href="#formules" data-scroll-to="formules">Formules</a>
-        <a href="#service" data-scroll-to="service">Retrait &amp; livraison</a>
-        <a href="#allergenes" data-scroll-to="allergenes">Allergènes</a>
-        <a href="#contact" data-scroll-to="contact">Contact</a>
-      </nav>
+  <body>
+    <a class="skip-link" href="#carte">Aller à la carte</a>
 
-      <button class="btn" id="cart-button" data-action="open-cart" aria-label="Ouvrir le panier">
-        🛒 Panier (<span id="cart-count">0</span>)
-      </button>
-      <!-- Bouton burger : visible uniquement sur mobile -->
-      <button class="btn" id="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Menu">
-        ☰
-      </button>
-    </div>
-  </header>
-
-  <main>
-    <!-- Accueil -->
-    <div class="hero" id="accueil">
+    <header>
       <div class="container">
-        <div class="hero-tag">Bistro français</div>
-        <h1>Eat &amp; Fit</h1>
-        <p class="hero-tag">À table comme à la maison, tout simplement.</p>
-        <p>
-          Cassoulet fumant, bœuf bourguignon mijoté, fondues à partager : une
-          cuisine française généreuse, servie dans une ambiance chaleureuse.
-          Sur place, à emporter ou chez vous.
-        </p>
-        <button class="btn" data-action="start-order">Commander en ligne</button>
-        <button class="btn btn-outline" data-scroll-to="carte">Découvrir la carte</button>
-      </div>
-    </div>
+        <a class="brand" href="#accueil" data-scroll-to="accueil"
+          >Eat &amp; Fit</a
+        >
 
-    <!-- Les plats mis en avant sont ajoutés par script.js -->
-    <section>
-      <div class="container">
-        <h2>Nos incontournables</h2>
-        <div class="grid" id="popular-items"></div>
-      </div>
-    </section>
+        <nav id="main-nav" aria-label="Navigation principale">
+          <a href="#formules" data-scroll-to="formules">Formules</a>
+          <a href="#carte" data-scroll-to="carte">La carte</a>
+          <a href="#service" data-scroll-to="service"
+            >Retrait &amp; livraison</a
+          >
+          <a href="#allergenes" data-scroll-to="allergenes">Allergènes</a>
+          <a href="#contact" data-scroll-to="contact">Contact</a>
+        </nav>
 
-    <section class="section-alt" id="formules">
-      <div class="container">
-        <h2>Nos formules</h2>
-        <p>
-          Composez votre formule : un petit prix sur l’ensemble. Choix libre
-          dans chaque catégorie, supplément indiqué entre parenthèses.
-          Raclette et fondues, servies dès 2 personnes, ne sont pas incluses.
-          Aucune boisson alcoolisée dans les formules.
-        </p>
-        <div class="grid" id="formules-grid"></div>
+        <button
+          class="btn"
+          id="cart-button"
+          data-action="open-cart"
+          aria-label="Ouvrir le panier"
+        >
+          🛒 Panier (<span id="cart-count">0</span>)
+        </button>
+        <!-- Bouton burger : visible uniquement sur mobile -->
+        <button
+          class="btn"
+          id="menu-toggle"
+          aria-expanded="false"
+          aria-controls="main-nav"
+          aria-label="Menu"
+        >
+          ☰
+        </button>
       </div>
-    </section>
+    </header>
 
-    <section id="carte">
-      <div class="container">
-        <h2>La carte</h2>
-        <p class="notice" id="provisional-notice">
-          <b>Allergènes provisoires.</b> Les informations d’allergènes sont
-          indicatives, en cours de validation par le restaurant. Prix
-          indicatifs, modifiables. Consultez « Allergènes » sur chaque plat
-          avant de commander.
-        </p>
-        <div class="tabs" id="menu-tabs" role="group" aria-label="Catégories"></div>
-        <div class="grid" id="menu-items"></div>
+    <main>
+      <!-- Accueil -->
+      <div class="hero" id="accueil">
+        <div class="container">
+          <div class="hero-tag">Repas Équilibrés où vous voulez</div>
+          <h1>Eat &amp; Fit</h1>
+          <p class="hero-tag">Bon pour la ligne</p>
+          <p>
+            Cassoulet fumant, bœuf bourguignon mijoté, fondues à partager : une
+            cuisine française généreuse, servie dans une ambiance chaleureuse.
+            Sur place, à emporter ou chez vous.
+          </p>
+          <button class="btn" data-action="start-order">
+            Commander en ligne
+          </button>
+          <button class="btn btn-outline" data-scroll-to="carte">
+            Découvrir la carte
+          </button>
+        </div>
       </div>
-    </section>
 
-    <section class="section-alt" id="service">
-      <div class="container">
-        <h2>À emporter ou en livraison</h2>
-        <div class="columns" id="service-columns"></div>
-      </div>
-    </section>
+      <!-- Les plats mis en avant sont ajoutés par script.js -->
+      <section>
+        <div class="container">
+          <h2>Nos incontournables</h2>
+          <div class="grid" id="popular-items"></div>
+        </div>
+      </section>
 
-    <section id="infos">
+      <section class="section-alt" id="formules">
+        <div class="container">
+          <h2>Nos formules</h2>
+          <p>
+            Composez votre formule : un petit prix sur l’ensemble. Choix libre
+            dans chaque catégorie, supplément indiqué entre parenthèses.
+            Raclette et fondues, servies dès 2 personnes, ne sont pas incluses.
+            Aucune boisson alcoolisée dans les formules.
+          </p>
+          <div class="grid" id="formules-grid"></div>
+        </div>
+      </section>
+
+      <section id="carte">
+        <div class="container">
+          <h2>La carte</h2>
+          <p class="notice" id="provisional-notice">
+            <b>Allergènes provisoires.</b> Les informations d’allergènes sont
+            indicatives, en cours de validation par le restaurant. Prix
+            indicatifs, modifiables. Consultez « Allergènes » sur chaque plat
+            avant de commander.
+          </p>
+          <div
+            class="tabs"
+            id="menu-tabs"
+            role="group"
+            aria-label="Catégories"
+          ></div>
+          <div class="grid" id="menu-items"></div>
+        </div>
+      </section>
+
+      <section class="section-alt" id="service">
+        <div class="container">
+          <h2>À emporter ou en livraison</h2>
+          <div class="columns" id="service-columns"></div>
+        </div>
+      </section>
+
+      <section id="infos">
+        <div class="container columns">
+          <div>
+            <h2>Horaires</h2>
+            <ul class="hours-list" id="hours-list"></ul>
+          </div>
+          <div>
+            <h2>Nous trouver</h2>
+            <p>
+              <mark>[Adresse du restaurant]</mark><br />
+              Téléphone : <mark>[Téléphone]</mark><br />
+              Zone de livraison : <mark id="delivery-zone"></mark>
+            </p>
+            <p>
+              Réservation :
+              <mark>[Téléphone ou lien de réservation à ajouter]</mark>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-alt" id="allergenes">
+        <div class="container">
+          <h2>Informations sur les allergènes</h2>
+          <p class="notice">
+            <b>Données provisoires.</b> Les allergènes affichés n’ont pas été
+            vérifiés avec les recettes, les fiches fournisseurs et les risques
+            de contamination croisée. Ils doivent être validés par le restaurant
+            avant la mise en ligne. Aucun plat n’est garanti sans allergène : en
+            cas d’allergie, prévenez-nous avant de commander.
+          </p>
+          <p>Les 14 allergènes à déclaration obligatoire :</p>
+          <ol class="allergen-list" id="allergen-legend"></ol>
+        </div>
+      </section>
+
+      <section id="apropos">
+        <div class="container">
+          <h2>À propos</h2>
+          <p class="about-text">
+            Chez Eat &amp; Fit, on aime la cuisine française qui réchauffe :
+            celle des bistrots, des auberges et des tables de famille. Des plats
+            mijotés, des fromages fondus, des desserts gourmands, et des
+            portions qui rassasient. Notre équipe vous accueille avec
+            simplicité, pour un repas qui fait du bien.
+            <mark>[Texte à personnaliser par le restaurant]</mark>
+          </p>
+        </div>
+      </section>
+
+      <section class="section-alt" id="contact">
+        <div class="container columns">
+          <div>
+            <h2>Contact</h2>
+            <p>
+              E-mail : <mark>[Adresse e-mail]</mark><br />
+              Réseaux sociaux : <mark>[Instagram]</mark> ·
+              <mark>[Facebook]</mark><br />
+              Service client :
+              <mark>[Coordonnées et horaires du service client]</mark>
+            </p>
+          </div>
+
+          <form id="contact-form" novalidate>
+            <label for="contact-name">Nom</label>
+            <input id="contact-name" autocomplete="name" />
+
+            <label for="contact-email">E-mail</label>
+            <input id="contact-email" type="email" autocomplete="email" />
+
+            <label for="contact-message">Message</label>
+            <textarea id="contact-message" rows="4"></textarea>
+
+            <p id="contact-status" role="status"></p>
+            <button class="btn">Envoyer le message</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Textes légaux : brouillons à compléter avant la mise en ligne -->
+      <section id="legal">
+        <div class="container">
+          <h2>Informations légales</h2>
+          <p class="notice">
+            <b>Projets de textes.</b> Ces pages sont des brouillons à compléter
+            et à faire vérifier avant la mise en ligne. Les éléments entre
+            crochets sont à renseigner.
+          </p>
+
+          <details id="l-mentions">
+            <summary>Mentions légales</summary>
+            <p>
+              Dénomination : <mark>[Raison sociale]</mark> · SIRET :
+              <mark>[SIRET]</mark> · RCS : <mark>[N° RCS]</mark> · Adresse du
+              siège : <mark>[Adresse]</mark> · Directeur de la publication :
+              <mark>[Nom]</mark> · Hébergeur :
+              <mark>[Nom, adresse, contact]</mark> · TVA :
+              <mark>[N° TVA, le cas échéant]</mark>
+            </p>
+          </details>
+
+          <details id="l-privacy">
+            <summary>Politique de confidentialité</summary>
+            <p>
+              Les données saisies (nom, téléphone, adresse, message) servent
+              uniquement à traiter votre demande. Dans cette version de
+              démonstration, elles restent dans votre navigateur et ne sont
+              envoyées nulle part. Responsable de traitement :
+              <mark>[Raison sociale]</mark> · Contact données personnelles :
+              <mark>[E-mail DPO ou contact]</mark> · Durée de conservation :
+              <mark>[À définir]</mark>. Vous pouvez exercer vos droits d’accès,
+              de rectification et de suppression auprès de ce contact.
+            </p>
+          </details>
+
+          <details id="l-cookies">
+            <summary>Gestion des cookies</summary>
+            <p>
+              Ce site n’utilise ni cookie de mesure d’audience ni traceur
+              publicitaire. Aucun bandeau de consentement n’est donc affiché. Si
+              de tels outils sont ajoutés, un bandeau permettant d’accepter ou
+              de refuser devra être mis en place. <mark>[À valider]</mark>
+            </p>
+          </details>
+
+          <details id="l-cgv">
+            <summary>Conditions générales de vente (CGV)</summary>
+            <p>
+              Prix en euros, TTC. Commande, paiement, annulation, droit de
+              rétractation (non applicable aux denrées périssables),
+              réclamations et médiateur de la consommation :
+              <mark>[Clauses à rédiger et à faire valider]</mark>. Raclette et
+              fondues : commande 24 h à l’avance, à partir de 2 personnes.
+              Alcool : vente interdite aux mineurs.
+            </p>
+          </details>
+
+          <details id="l-liv">
+            <summary>Conditions de retrait et de livraison</summary>
+            <p id="delivery-terms"></p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <footer>
       <div class="container columns">
         <div>
-          <h2>Horaires</h2>
-          <ul class="hours-list" id="hours-list"></ul>
+          <b>Eat &amp; Fit</b><br />
+          Bistro français<br />
+          <mark>[Adresse]</mark> · <mark>[Téléphone]</mark>
         </div>
-        <div>
-          <h2>Nous trouver</h2>
-          <p>
-            <mark>[Adresse du restaurant]</mark><br>
-            Téléphone : <mark>[Téléphone]</mark><br>
-            Zone de livraison : <mark id="delivery-zone"></mark>
-          </p>
-          <p>
-            Réservation :
-            <mark>[Téléphone ou lien de réservation à ajouter]</mark>
-          </p>
-        </div>
+        <ul>
+          <li><a href="#formules" data-scroll-to="formules">Formules</a></li>
+          <li><a href="#carte" data-scroll-to="carte">La carte</a></li>
+          <li>
+            <a href="#allergenes" data-scroll-to="allergenes">Allergènes</a>
+          </li>
+          <li><a href="#contact" data-scroll-to="contact">Contact</a></li>
+        </ul>
+        <ul>
+          <li>
+            <a href="#l-mentions" data-scroll-to="l-mentions"
+              >Mentions légales</a
+            >
+          </li>
+          <li>
+            <a href="#l-privacy" data-scroll-to="l-privacy"
+              >Politique de confidentialité</a
+            >
+          </li>
+          <li>
+            <a href="#l-cookies" data-scroll-to="l-cookies"
+              >Gestion des cookies</a
+            >
+          </li>
+          <li><a href="#l-cgv" data-scroll-to="l-cgv">CGV</a></li>
+          <li>
+            <a href="#l-liv" data-scroll-to="l-liv">Retrait et livraison</a>
+          </li>
+        </ul>
       </div>
-    </section>
+    </footer>
 
-    <section class="section-alt" id="allergenes">
-      <div class="container">
-        <h2>Informations sur les allergènes</h2>
-        <p class="notice">
-          <b>Données provisoires.</b> Les allergènes affichés n’ont pas été
-          vérifiés avec les recettes, les fiches fournisseurs et les risques
-          de contamination croisée. Ils doivent être validés par le restaurant
-          avant la mise en ligne. Aucun plat n’est garanti sans allergène : en
-          cas d’allergie, prévenez-nous avant de commander.
-        </p>
-        <p>Les 14 allergènes à déclaration obligatoire :</p>
-        <ol class="allergen-list" id="allergen-legend"></ol>
-      </div>
-    </section>
+    <!-- Panier (tiroir à droite), rempli par script.js -->
+    <aside id="cart" aria-label="Panier"></aside>
+    <!-- Petit message vocal/visuel quand on ajoute un plat -->
+    <div id="announcer" role="status"></div>
 
-    <section id="apropos">
-      <div class="container">
-        <h2>À propos</h2>
-        <p class="about-text">
-          Chez Eat &amp; Fit, on aime la cuisine française qui réchauffe :
-          celle des bistrots, des auberges et des tables de famille. Des plats
-          mijotés, des fromages fondus, des desserts gourmands, et des
-          portions qui rassasient. Notre équipe vous accueille avec
-          simplicité, pour un repas qui fait du bien.
-          <mark>[Texte à personnaliser par le restaurant]</mark>
-        </p>
-      </div>
-    </section>
-
-    <section class="section-alt" id="contact">
-      <div class="container columns">
-        <div>
-          <h2>Contact</h2>
-          <p>
-            E-mail : <mark>[Adresse e-mail]</mark><br>
-            Réseaux sociaux : <mark>[Instagram]</mark> · <mark>[Facebook]</mark><br>
-            Service client : <mark>[Coordonnées et horaires du service client]</mark>
-          </p>
-        </div>
-
-        <form id="contact-form" novalidate>
-          <label for="contact-name">Nom</label>
-          <input id="contact-name" autocomplete="name">
-
-          <label for="contact-email">E-mail</label>
-          <input id="contact-email" type="email" autocomplete="email">
-
-          <label for="contact-message">Message</label>
-          <textarea id="contact-message" rows="4"></textarea>
-
-          <p id="contact-status" role="status"></p>
-          <button class="btn">Envoyer le message</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- Textes légaux : brouillons à compléter avant la mise en ligne -->
-    <section id="legal">
-      <div class="container">
-        <h2>Informations légales</h2>
-        <p class="notice">
-          <b>Projets de textes.</b> Ces pages sont des brouillons à compléter
-          et à faire vérifier avant la mise en ligne. Les éléments entre
-          crochets sont à renseigner.
-        </p>
-
-        <details id="l-mentions">
-          <summary>Mentions légales</summary>
-          <p>
-            Dénomination : <mark>[Raison sociale]</mark> · SIRET :
-            <mark>[SIRET]</mark> · RCS : <mark>[N° RCS]</mark> · Adresse du
-            siège : <mark>[Adresse]</mark> · Directeur de la publication :
-            <mark>[Nom]</mark> · Hébergeur :
-            <mark>[Nom, adresse, contact]</mark> · TVA :
-            <mark>[N° TVA, le cas échéant]</mark>
-          </p>
-        </details>
-
-        <details id="l-privacy">
-          <summary>Politique de confidentialité</summary>
-          <p>
-            Les données saisies (nom, téléphone, adresse, message) servent
-            uniquement à traiter votre demande. Dans cette version de
-            démonstration, elles restent dans votre navigateur et ne sont
-            envoyées nulle part. Responsable de traitement :
-            <mark>[Raison sociale]</mark> · Contact données personnelles :
-            <mark>[E-mail DPO ou contact]</mark> · Durée de conservation :
-            <mark>[À définir]</mark>. Vous pouvez exercer vos droits d’accès,
-            de rectification et de suppression auprès de ce contact.
-          </p>
-        </details>
-
-        <details id="l-cookies">
-          <summary>Gestion des cookies</summary>
-          <p>
-            Ce site n’utilise ni cookie de mesure d’audience ni traceur
-            publicitaire. Aucun bandeau de consentement n’est donc affiché. Si
-            de tels outils sont ajoutés, un bandeau permettant d’accepter ou
-            de refuser devra être mis en place. <mark>[À valider]</mark>
-          </p>
-        </details>
-
-        <details id="l-cgv">
-          <summary>Conditions générales de vente (CGV)</summary>
-          <p>
-            Prix en euros, TTC. Commande, paiement, annulation, droit de
-            rétractation (non applicable aux denrées périssables),
-            réclamations et médiateur de la consommation :
-            <mark>[Clauses à rédiger et à faire valider]</mark>. Raclette et
-            fondues : commande 24 h à l’avance, à partir de 2 personnes.
-            Alcool : vente interdite aux mineurs.
-          </p>
-        </details>
-
-        <details id="l-liv">
-          <summary>Conditions de retrait et de livraison</summary>
-          <p id="delivery-terms"></p>
-        </details>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container columns">
-      <div>
-        <b>Eat &amp; Fit</b><br>
-        Bistro français<br>
-        <mark>[Adresse]</mark> · <mark>[Téléphone]</mark>
-      </div>
-      <ul>
-        <li><a href="#carte" data-scroll-to="carte">La carte</a></li>
-        <li><a href="#formules" data-scroll-to="formules">Formules</a></li>
-        <li><a href="#allergenes" data-scroll-to="allergenes">Allergènes</a></li>
-        <li><a href="#contact" data-scroll-to="contact">Contact</a></li>
-      </ul>
-      <ul>
-        <li><a href="#l-mentions" data-scroll-to="l-mentions">Mentions légales</a></li>
-        <li><a href="#l-privacy" data-scroll-to="l-privacy">Politique de confidentialité</a></li>
-        <li><a href="#l-cookies" data-scroll-to="l-cookies">Gestion des cookies</a></li>
-        <li><a href="#l-cgv" data-scroll-to="l-cgv">CGV</a></li>
-        <li><a href="#l-liv" data-scroll-to="l-liv">Retrait et livraison</a></li>
-      </ul>
-    </div>
-  </footer>
-
-  <!-- Panier (tiroir à droite), rempli par script.js -->
-  <aside id="cart" aria-label="Panier"></aside>
-  <!-- Petit message vocal/visuel quand on ajoute un plat -->
-  <div id="announcer" role="status"></div>
-
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
