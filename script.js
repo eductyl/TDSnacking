@@ -5,8 +5,6 @@
 
 // ---------- Réglages du restaurant (à modifier ici) ----------
 
-script.js--fetch()--> api/*php --PDO--> mysql
-
 const SETTINGS = {
   deliveryFee: 3.9,
   deliveryMinimum: 25,
@@ -910,13 +908,6 @@ function renderReviewStep(summary) {
     <p class="notice">Mode démonstration : la confirmation ne transmet rien au restaurant et ne déclenche aucun paiement.</p>
     <button class="btn btn-outline" data-action="edit-order">Modifier</button>
     <button class="btn" data-action="confirm-order">Confirmer la demande (démo)</button>`;
-}
-
-function renderDoneStep() {
-  return `
-    <p class="message-success"><b>Mode démonstration.</b> Demande n° ${state.orderRef} préparée sur cet appareil. Elle n’a pas été transmise au restaurant et aucun paiement n’a été effectué.</p>
-    <p>Pour commander réellement, appelez le restaurant : <mark>[Téléphone]</mark>.</p>
-    <button class="btn" data-action="reset-order">Nouvelle commande</button>`;
 }
 
 // Redessine tout le panier selon l'étape en cours

@@ -7,6 +7,6 @@ try{
 } catch (PDOException $e) {
     echo "Erreur de connexion à la base de données : " . $e->getMessage();
     http_response_code(500);
-    exit;
+    exit('Service indisponible');
 }
 ?>
