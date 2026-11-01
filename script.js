@@ -5,6 +5,8 @@
 
 // ---------- Réglages du restaurant (à modifier ici) ----------
 
+script.js--fetch()--> api/*php --PDO--> mysql
+
 const SETTINGS = {
   deliveryFee: 3.9,
   deliveryMinimum: 25,
