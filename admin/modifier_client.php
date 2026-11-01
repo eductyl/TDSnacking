@@ -1,48 +1,51 @@
 <?php
-// Récupération de l'ID du client à modifier depuis l'URL
-$id=$_GET['id'];
-// Inclusion du fichier de connexion à la base de données
-require_once "connexion.php";
-// Préparation et exécution de la requête pour récupérer les informations du client
-$stmt = $pdo->prepare("SELECT * FROM client WHERE id = ?");
-$stmt->execute([$id]);
-$client = $stmt->fetch(PDO::FETCH_ASSOC);
+// Formulaire de modification d'un client (réservé à l'administrateur).
+declare(strict_types=1);
+
+require_once __DIR__ . '/../inc/connexion.php';
+require_once __DIR__ . '/../inc/admin_layout.php';
+
+require_admin();
+
+$id = filter_var($_GET['id'] ?? null, FILTER_VALIDATE_INT);
+$client = false;
+if ($id) {
+    $stmt = $pdo->prepare('SELECT id, nom, prenom, telephone FROM client WHERE id = ?');
+    $stmt->execute([$id]);
+    $client = $stmt->fetch();
+}
+
+if (!$client) {
+    http_response_code(404);
+    admin_header('Client introuvable');
+    echo '<p>Ce client n\'existe pas. <a href="liste_client.php">Retour à la liste des clients</a></p>';
+    admin_footer();
+    exit;
+}
+
+admin_header('Modifier le client');
+if (!empty($_GET['erreur'])) {
+    echo '<p class="error">' . h($_GET['erreur']) . '</p>';
+}
 ?>
-<html>
-<head>
-    <title>Modifier le Client</title>
-    <link rel="stylesheet" type="text/css" href="commande.css">
-</head>
-<body>
-    <h1>Modifier le Client</h1>
-    <p>Ci-dessous se trouvent les informations du client à modifier :</p>
-    <!-- Formulaire de modification du client -->
-    <form action="update_client.php" method="post">
-        <input type="hidden" name="id" value="<?php echo htmlspecialchars($client['id']); ?>">
-        <table border="1" cellpadding="5" cellspacing="0" align="center">
-            <tr>
-                <th>ID : </th>
-                <td><input type="text" name="id" value="<?php echo $client['id']; ?>" readonly></td>
-            </tr>
-            <tr>
-                <th>Nom : </th>
-                <td><input type="text" name="nom" value="<?php echo htmlspecialchars($client['nom']); ?>"></td>
-            </tr>
-            <tr>
-                <th>Prénom : </th>
-                <td><input type="text" name="prenom" value="<?php echo htmlspecialchars($client['prenom']); ?>"></td>
-            </tr>
-            <tr>
-                <th>Téléphone : </th>
-                <td><input type="text" name="telephone" value="<?php echo htmlspecialchars($client['telephone']); ?>"></td>
-            </tr> 
-        </table>
-        <p style="text-align: center;">
-            <a href="liste_client.php">Retour à la liste des clients</a>
-        &nbsp;|&nbsp;
-            <input type="submit" value="Modifier le Client">
-        </p>
-    </form>
-    
-</body>
-</html>
+<form action="update_client.php" method="post" class="card">
+  <?= csrf_field() ?>
+  <input type="hidden" name="id" value="<?= (int) $client['id'] ?>">
+
+  <p class="muted">Client n° <?= (int) $client['id'] ?></p>
+
+  <label for="nom">Nom</label>
+  <input type="text" id="nom" name="nom" maxlength="50" value="<?= h($client['nom']) ?>" required>
+
+  <label for="prenom">Prénom</label>
+  <input type="text" id="prenom" name="prenom" maxlength="50" value="<?= h($client['prenom']) ?>" required>
+
+  <label for="telephone">Téléphone</label>
+  <input type="text" id="telephone" name="telephone" maxlength="20" value="<?= h($client['telephone']) ?>" required>
+
+  <p>
+    <button>Modifier le client</button>
+    &nbsp;<a href="liste_client.php">Retour à la liste des clients</a>
+  </p>
+</form>
+<?php admin_footer();

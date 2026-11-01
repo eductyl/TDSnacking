@@ -3,48 +3,12 @@
 //  Carte, formules, panier et formulaires
 // ==========================================================
 
-// ---------- Réglages du restaurant (à modifier ici) ----------
+// ---------- Réglages du restaurant ----------
 
-const SETTINGS = {
-  deliveryFee: 3.9,
-  deliveryMinimum: 25,
-  freeDeliveryFrom: 45,
-  prepMinutes: { pickup: 20, delivery: 45 },
-  advanceNoticeHours: 24,
-
-  // Horaires par jour : 0 = dimanche, 1 = lundi ... 6 = samedi.
-  // Heures décimales (14.5 = 14h30). Un jour absent = fermé.
-  openingHours: {
-    0: [[12, 15]],
-    2: [
-      [12, 14.5],
-      [19, 22],
-    ],
-    3: [
-      [12, 14.5],
-      [19, 22],
-    ],
-    4: [
-      [12, 14.5],
-      [19, 22],
-    ],
-    5: [
-      [12, 14.5],
-      [19, 23],
-    ],
-    6: [
-      [12, 14.5],
-      [19, 23],
-    ],
-  },
-
-  deliveryZone: "[Communes ou codes postaux desservis]",
-
-  // Passer à true une fois les allergènes validés par le restaurant
-  allergensVerified: false,
-};
-
-const allergensProvisional = !SETTINGS.allergensVerified;
+// Horaires, frais de livraison, etc. : ils viennent du serveur (inc/settings.php)
+// et sont chargés au démarrage par loadMenu(), tout en bas de ce fichier.
+const SETTINGS = {};
+let allergensProvisional = true;
 
 // ---------- Données ----------
 
@@ -67,412 +31,11 @@ const ALLERGENS = [
   "Mollusques",
 ];
 
-// Chaque plat : id, catégorie, nom, formats (libellé + prix), description
-// et numéros d'allergènes. Champs facultatifs :
-//   minPeople     nombre minimum de personnes (raclette, fondues)
-//   advanceOrder  à commander 24 h à l'avance
-//   surcharge     supplément quand le plat est choisi dans une formule
-//   seasonal      "selon arrivage"
-//   alcohol       réservé aux majeurs
-const MENU_ITEMS = [
-  // ----- Entrées -----
-  {
-    id: "gesiers",
-    category: "starter",
-    name: "Salade de gésiers",
-    formats: [{ label: "", price: 9.5 }],
-    description:
-      "Gésiers confits tièdes, salade verte, croûtons à l’ail et vinaigrette à la moutarde.",
-    allergens: [1, 10, 12],
-  },
-  {
-    id: "museau",
-    category: "starter",
-    name: "Salade de museau",
-    formats: [{ label: "", price: 9 }],
-    description:
-      "Museau de bœuf en vinaigrette, cornichons, oignons nouveaux et persil plat.",
-    allergens: [9, 10, 12],
-  },
-  {
-    id: "huitres",
-    category: "starter",
-    name: "Huîtres n° 5",
-    formats: [
-      { label: "6 pièces", price: 13.5 },
-      { label: "12 pièces", price: 25 },
-    ],
-    description:
-      "Huîtres creuses de calibre 5, vinaigre d’échalote et pain de seigle beurré.",
-    allergens: [1, 7, 12, 14],
-    surcharge: 4,
-    seasonal: true,
-  },
-  {
-    id: "plateau",
-    category: "starter",
-    name: "Plateau de charcuteries et fromages",
-    formats: [{ label: "", price: 16.5 }],
-    description:
-      "Jambon sec, rosette, pâté de campagne et trois fromages affinés, cornichons.",
-    allergens: [1, 7, 12],
-    surcharge: 3,
-  },
-  {
-    id: "maroilles",
-    category: "starter",
-    name: "Tarte au maroilles",
-    formats: [{ label: "", price: 9.5 }],
-    description:
-      "Tarte fine au maroilles, crème et oignons, servie tiède avec une petite salade.",
-    allergens: [1, 3, 7],
-  },
-  {
-    id: "escargots",
-    category: "starter",
-    name: "Escargots",
-    formats: [
-      { label: "6 pièces", price: 10.5 },
-      { label: "12 pièces", price: 18 },
-    ],
-    description: "Escargots de Bourgogne au beurre persillé, ail et échalote.",
-    allergens: [7, 14],
-  },
-
-  // ----- Plats -----
-  {
-    id: "flammenkuche",
-    category: "main",
-    name: "Flammenküche",
-    formats: [{ label: "", price: 19.5 }],
-    description:
-      "farine, huile, crème, fromage blanc, oignons, lardons, muscade.",
-    allergens: [1, 4, 6, 7, 12],
-  },
-  {
-    id: "cassoulet",
-    category: "main",
-    name: "Cassoulet",
-    formats: [{ label: "", price: 19.5 }],
-    description:
-      "Haricots blancs mijotés, confit de canard, saucisse de Toulouse et lard, gratinés au four.",
-    allergens: [1, 9, 12],
-  },
-  {
-    id: "raclette",
-    category: "main",
-    name: "Raclette",
-    formats: [{ label: "par personne", price: 24 }],
-    description:
-      "Fromage à raclette fondu à table, charcuteries, pommes de terre et cornichons.",
-    allergens: [7, 12],
-    minPeople: 2,
-    advanceOrder: true,
-  },
-  {
-    id: "savoyarde",
-    category: "main",
-    name: "Fondue savoyarde",
-    formats: [{ label: "par personne", price: 23 }],
-    description:
-      "Mélange de fromages de Savoie, vin blanc et cubes de pain de campagne.",
-    allergens: [1, 7, 12],
-    minPeople: 2,
-    advanceOrder: true,
-  },
-  {
-    id: "bourguignonne",
-    category: "main",
-    name: "Fondue bourguignonne",
-    formats: [{ label: "par personne", price: 26 }],
-    description:
-      "Bœuf tendre à plonger dans l’huile, trois sauces maison et pommes grenaille.",
-    allergens: [3, 10, 12],
-    minPeople: 2,
-    advanceOrder: true,
-  },
-  {
-    id: "bourguignon",
-    category: "main",
-    name: "Bœuf bourguignon",
-    formats: [{ label: "", price: 19 }],
-    description:
-      "Bœuf mijoté au vin rouge, lardons, champignons et pommes vapeur.",
-    allergens: [1, 9, 12],
-  },
-  {
-    id: "choucroute",
-    category: "main",
-    name: "Choucroute",
-    formats: [{ label: "", price: 21 }],
-    description:
-      "Choucroute garnie : saucisse, lard fumé, palette et pommes de terre.",
-    allergens: [9, 10, 12],
-  },
-  {
-    id: "aligot",
-    category: "main",
-    name: "Aligot",
-    formats: [{ label: "", price: 17.5 }],
-    description:
-      "Aligot onctueux à la tomme fraîche, saucisse de Toulouse grillée.",
-    allergens: [7],
-  },
-  {
-    id: "rognons",
-    category: "main",
-    name: "Rognons",
-    formats: [{ label: "", price: 18.5 }],
-    description:
-      "Rognons de veau sautés, sauce moutarde à l’ancienne, gratin dauphinois.",
-    allergens: [1, 7, 10],
-  },
-  {
-    id: "tripes",
-    category: "main",
-    name: "Tripes à la mode de Caen",
-    formats: [{ label: "", price: 17.5 }],
-    description:
-      "Tripes mijotées au cidre et au calvados, carottes, oignons et pommes vapeur.",
-    allergens: [9, 12],
-  },
-  {
-    id: "foie",
-    category: "main",
-    name: "Foie de veau",
-    formats: [{ label: "", price: 22 }],
-    description: "Foie de veau poêlé, jus au vin et purée maison.",
-    allergens: [1, 7, 12],
-    surcharge: 3,
-  },
-  {
-    id: "sanglier",
-    category: "main",
-    name: "Daube de sanglier",
-    formats: [{ label: "", price: 21.5 }],
-    description:
-      "Sanglier mijoté au vin rouge et aux baies de genièvre, pommes de terre.",
-    allergens: [9, 12],
-    surcharge: 2,
-    seasonal: true,
-  },
-  {
-    id: "jarret",
-    category: "main",
-    name: "Jarret de porc",
-    formats: [{ label: "", price: 20 }],
-    description: "Jarret braisé à la bière, légumes racines et moutarde.",
-    allergens: [1, 9, 10],
-  },
-
-  // ----- Desserts -----
-  {
-    id: "baba",
-    category: "dessert",
-    name: "Baba au rhum",
-    formats: [{ label: "", price: 8.5 }],
-    description: "Baba moelleux imbibé de rhum ambré, crème chantilly.",
-    allergens: [1, 3, 7],
-    alcohol: true,
-  },
-  {
-    id: "fondant",
-    category: "dessert",
-    name: "Fondant au chocolat",
-    formats: [{ label: "", price: 8 }],
-    description: "Chocolat noir et cœur coulant, crème anglaise.",
-    allergens: [1, 3, 7],
-  },
-  {
-    id: "bananabread",
-    category: "dessert",
-    name: "Banana bread",
-    formats: [{ label: "", price: 7 }],
-    description: "Banana bread maison tiède, noix et boule de glace vanille.",
-    allergens: [1, 3, 7, 8],
-  },
-  {
-    id: "split",
-    category: "dessert",
-    name: "Banana split",
-    formats: [{ label: "", price: 8.5 }],
-    description:
-      "Banane, glaces vanille, chocolat et fraise, chantilly et sauce chocolat.",
-    allergens: [3, 7, 8],
-  },
-  {
-    id: "profiteroles",
-    category: "dessert",
-    name: "Profiteroles",
-    formats: [{ label: "", price: 9 }],
-    description: "Choux garnis de glace vanille, sauce chocolat chaude.",
-    allergens: [1, 3, 7],
-  },
-  {
-    id: "speculoos",
-    category: "dessert",
-    name: "Cheesecake au spéculoos",
-    formats: [{ label: "", price: 8 }],
-    description: "Cheesecake crémeux sur un lit de spéculoos.",
-    allergens: [1, 3, 6, 7],
-  },
-  {
-    id: "colonel",
-    category: "dessert",
-    name: "Colonel",
-    formats: [{ label: "", price: 8.5 }],
-    description: "Sorbet citron arrosé de vodka, à déguster à la cuillère.",
-    allergens: [],
-    alcohol: true,
-  },
-  {
-    id: "parisbrest",
-    category: "dessert",
-    name: "Paris-Brest",
-    formats: [{ label: "", price: 8.5 }],
-    description:
-      "Pâte à choux, crème mousseline pralinée et éclats de noisettes.",
-    allergens: [1, 3, 7, 8],
-  },
-
-  // ----- Boissons -----
-  {
-    id: "biere",
-    category: "drink",
-    name: "Bière",
-    formats: [
-      { label: "25 cl", price: 4.5 },
-      { label: "50 cl", price: 7.5 },
-    ],
-    description: "Bière à la pression, sélection du moment.",
-    allergens: [1],
-    alcohol: true,
-  },
-  {
-    id: "rhum",
-    category: "drink",
-    name: "Rhum arrangé",
-    formats: [{ label: "4 cl", price: 6.5 }],
-    description: "Rhum arrangé maison, fruits et épices selon la saison.",
-    allergens: [],
-    alcohol: true,
-  },
-  {
-    id: "chartreuse",
-    category: "drink",
-    name: "Chartreuse",
-    formats: [{ label: "4 cl", price: 7 }],
-    description:
-      "Liqueur de plantes des Alpes, à déguster fraîche ou à température ambiante.",
-    allergens: [],
-    alcohol: true,
-  },
-  {
-    id: "vins",
-    category: "drink",
-    name: "Vins",
-    formats: [
-      { label: "Verre 12 cl", price: 5.5 },
-      { label: "Bouteille 75 cl", price: 26 },
-    ],
-    description:
-      "Sélection de vins de nos régions, rouge, blanc ou rosé. Carte sur demande.",
-    allergens: [12],
-    alcohol: true,
-  },
-  {
-    id: "prune",
-    category: "drink",
-    name: "Prune de Papy",
-    formats: [{ label: "4 cl", price: 6 }],
-    description: "Notre digestif à la prune, recette maison.",
-    allergens: [],
-    alcohol: true,
-  },
-  {
-    id: "jacqueline",
-    category: "drink",
-    name: "Jacqueline",
-    formats: [{ label: "4 cl", price: 6.5 }],
-    description:
-      "Une spécialité de la maison à découvrir. [Description à préciser par le restaurant]",
-    allergens: [],
-    alcohol: true,
-  },
-  {
-    id: "calvados",
-    category: "drink",
-    name: "Calvados",
-    formats: [{ label: "4 cl", price: 7 }],
-    description: "Eau-de-vie de cidre normande, ronde et fruitée.",
-    allergens: [],
-    alcohol: true,
-  },
-  {
-    id: "armagnac",
-    category: "drink",
-    name: "Armagnac",
-    formats: [{ label: "4 cl", price: 7.5 }],
-    description: "Eau-de-vie de Gascogne, boisée et soyeuse.",
-    allergens: [],
-    alcohol: true,
-  },
-
-  // ----- Boissons sans alcool -----
-  {
-    id: "eau",
-    category: "soft",
-    name: "Eau minérale",
-    formats: [{ label: "50 cl", price: 3 }],
-    description: "Plate ou gazeuse.",
-    allergens: [],
-  },
-  {
-    id: "soda",
-    category: "soft",
-    name: "Soda",
-    formats: [{ label: "33 cl", price: 3.5 }],
-    description: "Sélection de sodas.",
-    allergens: [],
-  },
-  {
-    id: "jus",
-    category: "soft",
-    name: "Jus de fruits",
-    formats: [{ label: "25 cl", price: 3.5 }],
-    description: "Jus de fruits au choix.",
-    allergens: [],
-  },
-  {
-    id: "cafe",
-    category: "soft",
-    name: "Café",
-    formats: [{ label: "", price: 2 }],
-    description: "Café serré ou allongé.",
-    allergens: [],
-  },
-];
-
-const FORMULES = [
-  {
-    name: "Formule Bistro",
-    price: 26,
-    description: "Une entrée et un plat",
-    courses: ["starter", "main"],
-  },
-  {
-    name: "Formule Gourmande",
-    price: 32,
-    description: "Une entrée, un plat et un dessert",
-    courses: ["starter", "main", "dessert"],
-  },
-  {
-    name: "Formule Complète",
-    price: 35,
-    description: "Une entrée, un plat, un dessert et une boisson sans alcool",
-    courses: ["starter", "main", "dessert", "soft"],
-  },
-];
+// La carte et les formules viennent de la base de données (api/menu.php).
+// Chaque plat : id, category, name, formats [{ label, price }], description,
+// allergens (numéros), puis minPeople, advanceOrder, surcharge, seasonal, alcohol.
+let MENU_ITEMS = [];
+let FORMULES = [];   // chaque formule : id, name, price, description, courses
 
 // Nom affiché pour chaque choix d'une formule
 const COURSE_LABELS = {
@@ -521,7 +84,7 @@ const STEP_TITLES = {
   cart: "Mon panier",
   form: "Mes informations",
   review: "Vérification",
-  done: "Demande préparée",
+  done: "Commande enregistrée",
 };
 
 // ---------- État de la page ----------
@@ -534,6 +97,7 @@ const state = {
   errors: [],
   activeTab: "starters",
   orderRef: "",
+  submitting: false, // vrai pendant l'envoi de la commande
 };
 
 // ---------- Petits outils ----------
@@ -589,6 +153,45 @@ function announce(message) {
   }, 2200);
 }
 
+// Envoie du JSON à un fichier PHP. Renvoie la réponse décodée,
+// ou lève une erreur dont le message est lisible par le client.
+async function postJson(url, payload) {
+  let response;
+  try {
+    response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    throw new Error("Connexion impossible. Vérifiez votre connexion et réessayez.");
+  }
+
+  let data = null;
+  try {
+    data = await response.json();
+  } catch {
+    // réponse qui n'est pas du JSON (erreur PHP) : message générique ci-dessous
+  }
+
+  if (!response.ok) {
+    const error = new Error(
+      (data && data.error) || "Une erreur est survenue. Réessayez dans un instant.",
+    );
+    error.details = data && data.errors;
+    throw error;
+  }
+  return data;
+}
+
+// Une ligne du panier → ce que le serveur attend : des identifiants et une quantité.
+// Les noms et les prix ne sont PAS envoyés : le serveur les relit dans la base.
+function toOrderLine(line) {
+  return line.formuleId
+    ? { formuleId: line.formuleId, choices: line.choices, quantity: line.quantity }
+    : { itemId: line.itemId, formatIndex: line.formatIndex, quantity: line.quantity };
+}
+
 // ---------- Affichage de la carte ----------
 
 function renderMenuCard(item) {
@@ -610,21 +213,21 @@ function renderMenuCard(item) {
     const options = item.formats
       .map(
         (format, index) =>
-          `<option value="${index}">${format.label} — ${formatPrice(format.price)}</option>`,
+          `<option value="${index}">${escapeHtml(format.label)} — ${formatPrice(format.price)}</option>`,
       )
       .join("");
-    priceHtml = `<select aria-label="Format de ${item.name}">${options}</select>`;
+    priceHtml = `<select aria-label="Format de ${escapeHtml(item.name)}">${options}</select>`;
   } else {
     const [format] = item.formats;
-    priceHtml = `<b>${formatPrice(format.price)}</b><small>${format.label}</small>`;
+    priceHtml = `<b>${formatPrice(format.price)}</b><small>${escapeHtml(format.label)}</small>`;
   }
 
   return `
-    <article class="card" data-id="${item.id}">
+    <article class="card" data-id="${escapeHtml(item.id)}">
       <div class="card-icon" aria-hidden="true">${CATEGORY_ICONS[item.category]}</div>
       <div class="card-body">
-        <h3>${item.name}</h3>
-        <p>${item.description}</p>
+        <h3>${escapeHtml(item.name)}</h3>
+        <p>${escapeHtml(item.description)}</p>
         ${notesHtml}
         <details>
           <summary>Allergènes${allergensProvisional ? " (provisoire)" : ""}</summary>
@@ -632,7 +235,7 @@ function renderMenuCard(item) {
         </details>
         <div class="card-footer">
           ${priceHtml}
-          <button class="btn" data-action="add-item" aria-label="Ajouter ${item.name} au panier">Ajouter au panier</button>
+          <button class="btn" data-action="add-item" aria-label="Ajouter ${escapeHtml(item.name)} au panier">Ajouter au panier</button>
         </div>
       </div>
     </article>`;
@@ -666,7 +269,7 @@ function renderFormules() {
             const surcharge = item.surcharge
               ? ` (+${formatPrice(item.surcharge)})`
               : "";
-            return `<option value="${item.id}">${item.name}${surcharge}</option>`;
+            return `<option value="${escapeHtml(item.id)}">${escapeHtml(item.name)}${surcharge}</option>`;
           })
           .join("");
         return `<label>${COURSE_LABELS[category]}<select data-category="${category}">${options}</select></label>`;
@@ -676,8 +279,8 @@ function renderFormules() {
     return `
       <article class="card" data-formule="${index}">
         <div class="card-body">
-          <h3>${formule.name}</h3>
-          <p>${formule.description}</p>
+          <h3>${escapeHtml(formule.name)}</h3>
+          <p>${escapeHtml(formule.description)}</p>
           ${selects}
           <div class="card-footer">
             <b class="formule-price"></b>
@@ -697,11 +300,13 @@ function computeFormule(card) {
   let separatePrice = 0; // ce que coûteraient les mêmes plats commandés à la carte
   let containsAlcohol = false;
   const names = [];
+  const choices = []; // ids des plats choisis, dans l'ordre des catégories
 
   card.querySelectorAll("select").forEach((select) => {
     const item = MENU_ITEMS.find((menuItem) => menuItem.id === select.value);
     price += item.surcharge || 0;
     separatePrice += item.formats[0].price;
+    choices.push(item.id);
     names.push(
       item.name +
         (item.formats.length > 1 ? ` (${item.formats[0].label})` : ""),
@@ -709,7 +314,7 @@ function computeFormule(card) {
     if (item.alcohol) containsAlcohol = true;
   });
 
-  return { price, separatePrice, detail: names.join(" · "), containsAlcohol };
+  return { price, separatePrice, detail: names.join(" · "), containsAlcohol, choices };
 }
 
 function updateFormulePrice(card) {
@@ -770,11 +375,11 @@ function renderCartLines() {
   const rows = state.cartLines.map(
     (line) => `
     <li>
-      <div><b>${line.name}</b><small>${line.detail}</small></div>
+      <div><b>${escapeHtml(line.name)}</b><small>${escapeHtml(line.detail)}</small></div>
       <div class="quantity-controls">
-        <button class="btn btn-outline" data-action="change-quantity" data-key="${line.key}" data-delta="-1" aria-label="Retirer une unité de ${line.name}">−</button>
+        <button class="btn btn-outline" data-action="change-quantity" data-key="${line.key}" data-delta="-1" aria-label="Retirer une unité de ${escapeHtml(line.name)}">−</button>
         <span>${line.quantity}</span>
-        <button class="btn btn-outline" data-action="change-quantity" data-key="${line.key}" data-delta="1" aria-label="Ajouter une unité de ${line.name}">+</button>
+        <button class="btn btn-outline" data-action="change-quantity" data-key="${line.key}" data-delta="1" aria-label="Ajouter une unité de ${escapeHtml(line.name)}">+</button>
       </div>
       <b>${formatPrice(line.price * line.quantity)}</b>
     </li>`,
@@ -858,8 +463,11 @@ function renderFormStep(summary) {
   return `
     ${errorList}
     <form id="order-form" novalidate>
-      <label for="order-name">Nom</label>
-      <input id="order-name" name="name" autocomplete="name" value="${escapeHtml(form.name)}">
+      <label for="order-firstname">Prénom</label>
+      <input id="order-firstname" name="firstname" autocomplete="given-name" value="${escapeHtml(form.firstname)}">
+
+      <label for="order-lastname">Nom</label>
+      <input id="order-lastname" name="lastname" autocomplete="family-name" value="${escapeHtml(form.lastname)}">
 
       <label for="order-phone">Téléphone</label>
       <input id="order-phone" name="phone" type="tel" autocomplete="tel" value="${escapeHtml(form.phone)}">
@@ -889,7 +497,7 @@ function renderReviewStep(summary) {
   const rows = state.cartLines.map(
     (line) => `
     <li>
-      <div><b>${line.quantity} × ${line.name}</b><small>${line.detail}</small></div>
+      <div><b>${line.quantity} × ${escapeHtml(line.name)}</b><small>${escapeHtml(line.detail)}</small></div>
       <span></span>
       <b>${formatPrice(line.price * line.quantity)}</b>
     </li>`,
@@ -898,16 +506,33 @@ function renderReviewStep(summary) {
   const address = isDelivery ? `<br>${escapeHtml(form.address)}` : "";
   const note = form.note ? `<br><i>${escapeHtml(form.note)}</i>` : "";
 
+  // erreurs renvoyées par le serveur au moment de la confirmation
+  const errorList = state.errors.length
+    ? `<ul class="message-error" role="alert">${state.errors.map((error) => `<li>${escapeHtml(error)}</li>`).join("")}</ul>`
+    : "";
+  const busy = state.submitting ? "disabled" : "";
+
   return `
+    ${errorList}
     <ul class="cart-lines">${rows.join("")}</ul>
     <p>
       <b>${isDelivery ? "Livraison" : "À emporter"}</b> · ${formatSlot(new Date(form.slot))}<br>
-      ${escapeHtml(form.name)} · ${escapeHtml(form.phone)}${address}${note}
+      ${escapeHtml(form.firstname)} ${escapeHtml(form.lastname)} · ${escapeHtml(form.phone)}${address}${note}
     </p>
     ${renderTotals(summary)}
-    <p class="notice">Mode démonstration : la confirmation ne transmet rien au restaurant et ne déclenche aucun paiement.</p>
-    <button class="btn btn-outline" data-action="edit-order">Modifier</button>
-    <button class="btn" data-action="confirm-order">Confirmer la demande (démo)</button>`;
+    <p class="notice">Cette commande ne comprend pas de paiement en ligne. <mark>[Modalités de paiement à préciser par le restaurant]</mark></p>
+    <button class="btn btn-outline" data-action="edit-order" ${busy}>Modifier</button>
+    <button class="btn" data-action="confirm-order" ${busy}>${state.submitting ? "Envoi en cours…" : "Confirmer la commande"}</button>`;
+}
+
+function renderDoneStep() {
+  const when = state.form.slot
+    ? ` pour le ${formatSlot(new Date(state.form.slot))}`
+    : "";
+  return `
+    <p class="message-success"><b>Commande enregistrée.</b> Votre commande n° <b>${escapeHtml(state.orderRef)}</b>${when} a bien été transmise au restaurant. Conservez ce numéro.</p>
+    <p>Une question ? Appelez le restaurant : <mark>[Téléphone]</mark>.</p>
+    <button class="btn" data-action="reset-order">Nouvelle commande</button>`;
 }
 
 // Redessine tout le panier selon l'étape en cours
@@ -975,7 +600,11 @@ function validateOrderForm() {
   const form = state.form;
   const errors = [];
 
-  if ((form.name || "").trim().length < 2) {
+  if ((form.firstname || "").trim().length < 1) {
+    errors.push("Indiquez votre prénom.");
+  }
+
+  if ((form.lastname || "").trim().length < 2) {
     errors.push("Indiquez votre nom.");
   }
 
@@ -1009,7 +638,7 @@ function handleOrderFormSubmit() {
   renderCart();
 }
 
-function handleContactFormSubmit() {
+async function handleContactFormSubmit() {
   const name = $("#contact-name").value.trim();
   const email = $("#contact-email").value.trim();
   const message = $("#contact-message").value.trim();
@@ -1021,10 +650,24 @@ function handleContactFormSubmit() {
     status.className = "message-error";
     status.textContent =
       "Vérifiez votre nom, une adresse e-mail valide et un message d’au moins 10 caractères.";
-  } else {
+    return;
+  }
+
+  const sendButton = $("#contact-form button");
+  sendButton.disabled = true;
+  status.className = "";
+  status.textContent = "Envoi en cours…";
+
+  try {
+    await postJson("api/contact.php", { name, email, message });
     status.className = "message-success";
-    status.textContent =
-      "Mode démonstration : votre message n’a pas été envoyé, aucun service d’e-mail n’est connecté. Contactez-nous par téléphone.";
+    status.textContent = "Merci, votre message a bien été envoyé.";
+    $("#contact-form").reset();
+  } catch (error) {
+    status.className = "message-error";
+    status.textContent = error.message;
+  } finally {
+    sendButton.disabled = false;
   }
 }
 
@@ -1047,6 +690,8 @@ const actions = {
     } else {
       state.cartLines.push({
         key,
+        itemId: item.id,
+        formatIndex,
         name: item.name,
         detail: label,
         price,
@@ -1068,6 +713,8 @@ const actions = {
 
     state.cartLines.push({
       key: "formule-" + Date.now(),
+      formuleId: formule.id,
+      choices: choice.choices,
       name: formule.name,
       detail: choice.detail,
       price: choice.price,
@@ -1135,10 +782,37 @@ const actions = {
     renderCart();
   },
 
-  "confirm-order"() {
-    state.orderRef =
-      "DEMO-" + Math.random().toString(36).slice(2, 7).toUpperCase();
-    state.step = "done";
+  // Envoie la commande au serveur (api/commande.php) ; la référence vient de la base
+  async "confirm-order"() {
+    if (state.submitting) return;
+    state.submitting = true;
+    state.errors = [];
+    renderCart();
+
+    const form = state.form;
+    try {
+      const result = await postJson("api/commande.php", {
+        mode: state.mode,
+        form: {
+          firstname: form.firstname,
+          lastname: form.lastname,
+          phone: form.phone,
+          address: state.mode === "delivery" ? form.address : "",
+          slot: form.slot,
+          note: form.note,
+          adult: Boolean(form.adult),
+          rgpd: Boolean(form.rgpd),
+        },
+        lines: state.cartLines.map(toOrderLine),
+      });
+      state.orderRef = result.reference;
+      state.step = "done";
+    } catch (error) {
+      state.errors =
+        error.details && error.details.length ? error.details : [error.message];
+    }
+
+    state.submitting = false;
     renderCart();
   },
 
@@ -1204,45 +878,82 @@ $("#menu-toggle").addEventListener("click", (event) => {
 
 // ---------- Initialisation de la page ----------
 
-$("#popular-items").innerHTML = POPULAR_ITEM_IDS.map((id) =>
-  renderMenuCard(MENU_ITEMS.find((item) => item.id === id)),
-).join("");
-
-// Bandeau "allergènes provisoires" masqué une fois les données validées
-if (!allergensProvisional) $("#provisional-notice").hidden = true;
-
+// Ce qui ne dépend pas de la base de données
 $("#allergen-legend").innerHTML = ALLERGENS.map(
   (name) => `<li>${name}</li>`,
 ).join("");
 
-$("#hours-list").innerHTML = WEEK_DISPLAY_ORDER.map((day) => {
-  const ranges = (SETTINGS.openingHours[day] || [])
-    .map(
-      ([opening, closing]) => `${formatHour(opening)}–${formatHour(closing)}`,
-    )
-    .join(" · ");
-  return `<li><span>${DAY_NAMES[day]}</span><span>${ranges || "Fermé"}</span></li>`;
-}).join("");
+// Ce qui dépend des réglages et de la carte : dessiné une fois les données reçues
+function renderDataSections() {
+  $("#popular-items").innerHTML = POPULAR_ITEM_IDS.map((id) =>
+    MENU_ITEMS.find((item) => item.id === id),
+  )
+    .filter(Boolean)
+    .map(renderMenuCard)
+    .join("");
 
-$("#delivery-zone").textContent = SETTINGS.deliveryZone;
+  // Bandeau "allergènes provisoires" masqué une fois les données validées
+  $("#provisional-notice").hidden = !allergensProvisional;
 
-$("#service-columns").innerHTML = `
-  <div>
-    <h3>À emporter</h3>
-    <p>Commandez en ligne et récupérez votre repas au restaurant, prêt en ${SETTINGS.prepMinutes.pickup} minutes environ. Sans frais.</p>
-  </div>
-  <div>
-    <h3>Livraison</h3>
-    <p>Livraison en ${SETTINGS.prepMinutes.delivery} minutes environ. Frais de ${formatPrice(SETTINGS.deliveryFee)}, offerts dès ${formatPrice(SETTINGS.freeDeliveryFrom)} d’achat. Commande minimum de ${formatPrice(SETTINGS.deliveryMinimum)}. Zone : ${SETTINGS.deliveryZone}</p>
-  </div>
-  <div>
-    <h3>Sur commande</h3>
-    <p>Raclette et fondues : à partir de 2 personnes, à commander 24 h à l’avance.</p>
-  </div>`;
+  $("#hours-list").innerHTML = WEEK_DISPLAY_ORDER.map((day) => {
+    const ranges = (SETTINGS.openingHours[day] || [])
+      .map(
+        ([opening, closing]) => `${formatHour(opening)}–${formatHour(closing)}`,
+      )
+      .join(" · ");
+    return `<li><span>${DAY_NAMES[day]}</span><span>${ranges || "Fermé"}</span></li>`;
+  }).join("");
 
-$("#delivery-terms").innerHTML =
-  `Retrait : prêt en ${SETTINGS.prepMinutes.pickup} min environ. Livraison : ${SETTINGS.prepMinutes.delivery} min environ, frais de ${formatPrice(SETTINGS.deliveryFee)}, minimum ${formatPrice(SETTINGS.deliveryMinimum)}, zone ${SETTINGS.deliveryZone}. Réclamations et litiges : <mark>[À compléter]</mark>.`;
+  $("#delivery-zone").textContent = SETTINGS.deliveryZone;
 
-renderMenu();
-renderFormules();
+  $("#service-columns").innerHTML = `
+    <div>
+      <h3>À emporter</h3>
+      <p>Commandez en ligne et récupérez votre repas au restaurant, prêt en ${SETTINGS.prepMinutes.pickup} minutes environ. Sans frais.</p>
+    </div>
+    <div>
+      <h3>Livraison</h3>
+      <p>Livraison en ${SETTINGS.prepMinutes.delivery} minutes environ. Frais de ${formatPrice(SETTINGS.deliveryFee)}, offerts dès ${formatPrice(SETTINGS.freeDeliveryFrom)} d’achat. Commande minimum de ${formatPrice(SETTINGS.deliveryMinimum)}. Zone : ${SETTINGS.deliveryZone}</p>
+    </div>
+    <div>
+      <h3>Sur commande</h3>
+      <p>Raclette et fondues : à partir de 2 personnes, à commander 24 h à l’avance.</p>
+    </div>`;
+
+  $("#delivery-terms").innerHTML =
+    `Retrait : prêt en ${SETTINGS.prepMinutes.pickup} min environ. Livraison : ${SETTINGS.prepMinutes.delivery} min environ, frais de ${formatPrice(SETTINGS.deliveryFee)}, minimum ${formatPrice(SETTINGS.deliveryMinimum)}, zone ${SETTINGS.deliveryZone}. Réclamations et litiges : <mark>[À compléter]</mark>.`;
+
+  renderMenu();
+  renderFormules();
+  renderCart();
+}
+
+// Si la carte ne peut pas être chargée (serveur arrêté, base absente...)
+function showMenuError() {
+  const message = `<p class="notice">La carte est momentanément indisponible. Réessayez dans un instant ou appelez le restaurant : <mark>[Téléphone]</mark>.</p>`;
+  $("#popular-items").innerHTML = message;
+  $("#menu-items").innerHTML = message;
+  $("#formules-grid").innerHTML = message;
+}
+
+// Charge la carte, les formules et les réglages depuis la base (api/menu.php)
+async function loadMenu() {
+  try {
+    const response = await fetch("api/menu.php");
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    const data = await response.json();
+    if (!data.items || !data.items.length) throw new Error("carte vide");
+
+    Object.assign(SETTINGS, data.settings);
+    allergensProvisional = !SETTINGS.allergensVerified;
+    MENU_ITEMS = data.items;
+    FORMULES = data.formules;
+    renderDataSections();
+  } catch (error) {
+    console.error("Chargement de la carte impossible :", error);
+    showMenuError();
+  }
+}
+
 renderCart();
+loadMenu();

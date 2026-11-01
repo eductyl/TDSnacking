@@ -1,0 +1,33 @@
+/* Styles de l'administration (aux couleurs du site) */
+:root { --burgundy:#4a1726; --gold:#b99a65; --cream:#f5efe5; --text:#252521; --line:#e2d6c5; }
+* { box-sizing: border-box; }
+body { margin:0; font:16px/1.55 system-ui, sans-serif; background:var(--cream); color:var(--text); }
+main { max-width:1000px; margin:0 auto; padding:24px 20px 60px; }
+h1 { color:var(--burgundy); font-family:Georgia, serif; margin:.2em 0 .6em; }
+a { color:var(--burgundy); }
+.topbar { background:var(--burgundy); color:var(--cream); border-bottom:2px solid var(--gold);
+  display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; padding:10px 20px; }
+.topbar nav { display:flex; gap:16px; margin-right:auto; }
+.topbar a { color:var(--cream); text-decoration:none; }
+.topbar a:hover { color:var(--gold); }
+.topbar form { margin:0; }
+table { width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--line); }
+th, td { padding:9px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top; }
+th { background:#efe6d6; font-size:.9rem; }
+td.num, th.num { text-align:right; white-space:nowrap; }
+.scroll { overflow-x:auto; }
+.filters { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 16px; }
+.filters a { padding:4px 12px; border:1.5px solid var(--gold); border-radius:20px; text-decoration:none; }
+.filters a.active { background:var(--burgundy); color:var(--cream); border-color:var(--burgundy); }
+.badge { display:inline-block; padding:2px 10px; border-radius:12px; font-size:.85rem; font-weight:700; background:#e2d6c5; }
+.badge.nouvelle { background:#f6d98b; } .badge.en_preparation { background:#bcd7f2; }
+.badge.prete { background:#bfe3c4; } .badge.terminee { background:#d9d9d9; } .badge.annulee { background:#f0b8b8; }
+.card { background:#fff; border:1px solid var(--line); border-top:3px solid var(--gold); border-radius:8px; padding:16px 20px; margin:0 0 18px; }
+label { display:block; font-weight:700; margin:10px 0 3px; }
+input[type=text], input[type=password], select { width:100%; max-width:360px; padding:.5em; border:1px solid var(--gold); border-radius:6px; font:inherit; }
+button, .btn { background:var(--burgundy); color:var(--cream); border:0; border-radius:6px; padding:.55em 1.1em; font:inherit; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; }
+button.link { background:none; color:var(--cream); padding:0; font-weight:400; text-decoration:underline; }
+.error { background:#7a1f1f; color:#fff; padding:10px 14px; border-radius:6px; margin:0 0 14px; }
+.ok { background:#2f5a3a; color:#fff; padding:10px 14px; border-radius:6px; margin:0 0 14px; }
+.muted { color:#6b6459; }
+.login { max-width:420px; margin:60px auto; }
