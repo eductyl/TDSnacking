@@ -31,3 +31,7 @@ button.link { background:none; color:var(--cream); padding:0; font-weight:400; t
 .ok { background:#2f5a3a; color:#fff; padding:10px 14px; border-radius:6px; margin:0 0 14px; }
 .muted { color:#6b6459; }
 .login { max-width:420px; margin:60px auto; }
+button.danger { background:#7a1f1f; }
+button.danger:hover { background:#982828; }
+label.check { display:flex; gap:8px; align-items:flex-start; font-weight:400; max-width:560px; }
+label.check input { margin-top:5px; }

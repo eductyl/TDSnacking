@@ -15,8 +15,15 @@ $clients = $pdo->query(
 )->fetchAll();
 
 admin_header('Liste des clients');
+$messages = [
+    'supprime'  => 'Client supprimé.',
+    'anonymise' => 'Client anonymisé : ses données personnelles sont effacées, ses commandes sont conservées.',
+    'tout'      => 'Client et commandes supprimés.',
+];
 if (isset($_GET['maj'])) {
     echo '<p class="ok">Client modifié.</p>';
+} elseif (isset($messages[$_GET['msg'] ?? ''])) {
+    echo '<p class="ok">' . h($messages[$_GET['msg']]) . '</p>';
 }
 
 if (!$clients): ?>
@@ -32,7 +39,10 @@ if (!$clients): ?>
         <td><?= h($client['prenom']) ?></td>
         <td><?= h($client['telephone']) ?></td>
         <td class="num"><?= (int) $client['nb_commandes'] ?></td>
-        <td><a href="modifier_client.php?id=<?= (int) $client['id'] ?>">Modifier</a></td>
+        <td>
+          <a href="modifier_client.php?id=<?= (int) $client['id'] ?>">Modifier</a> ·
+          <a href="supprimer_client.php?id=<?= (int) $client['id'] ?>">Supprimer</a>
+        </td>
       </tr>
     <?php endforeach; ?>
     </tbody>
